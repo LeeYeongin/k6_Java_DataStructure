@@ -1,9 +1,12 @@
 package chap02기본자료구조;
 
+import java.util.HashSet;
 //메소드에 배열 전달 실습부터
 //실습 설명한다 
 //매개변수로 배열 전달
 import java.util.Random;
+import java.util.Set;
+
 public class 실습2_4배열전달함수 {
 
 	public static void main(String[] args) {
@@ -25,8 +28,21 @@ public class 실습2_4배열전달함수 {
 	public static void inputData(int []data) {//교재 63 - 난수의 생성
 		Random rnd = new Random();
 		
-		for(int i=0; i<data.length; i++)
-			data[i] = rnd.nextInt(100);
+		// 중복 신경쓰지 않는 경우
+//		for(int i=0; i<data.length; i++)
+//			data[i] = rnd.nextInt(100);
+		
+		// 중복 숫자를 받지 않는 경우
+		Set<Integer> d = new HashSet<Integer>();
+		
+		while(d.size() != data.length) {			
+			d.add(rnd.nextInt(100)+1);
+		}
+		
+		int i = 0;
+	    for (Integer value : d) {
+	        data[i++] = value;
+	    }
 	}
 	
 	static int findMax(int []items) {
