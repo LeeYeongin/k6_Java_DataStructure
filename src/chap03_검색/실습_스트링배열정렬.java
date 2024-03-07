@@ -7,29 +7,35 @@ import java.util.List;
 public class 실습_스트링배열정렬 {
 
 	    public static String[] removeElement1(String[] arr, String item) {
-	    	int cnt = 0;
-	    	int firstIdx = -1;
+	    	ArrayList<String> tmp = new ArrayList<String>(Arrays.asList(arr));
+	    	tmp.remove(item);
+	    	String[] result = new String[0];
 	    	
-	    	for(int i=0; i<arr.length; i++) {
-	    		if(arr[i].equals(item)) {
-	    			cnt++;
-	    			if(firstIdx == -1) {
-	    				firstIdx = i;
-	    			}
-	    		}
-	    	}
+	    	return tmp.toArray(result);
 	    	
-	    	String[] tmp = new String[arr.length-cnt+1];
-	    	int idx=0;
-	    	for(int i=0; i<arr.length; i++) {
-	    		if(arr[i].equals(item) && i != firstIdx) {
-	    			continue;
-	    		} else {
-	    			tmp[idx++] = arr[i];
-	    		}
-	    	}
-	    	
-	    	return tmp;
+//	    	int cnt = 0;
+//	    	int firstIdx = -1;
+//	    	
+//	    	for(int i=0; i<arr.length; i++) {
+//	    		if(arr[i].equals(item)) {
+//	    			cnt++;
+//	    			if(firstIdx == -1) {
+//	    				firstIdx = i;
+//	    			}
+//	    		}
+//	    	}
+//	    	
+//	    	String[] tmp = new String[arr.length-cnt+1];
+//	    	int idx=0;
+//	    	for(int i=0; i<arr.length; i++) {
+//	    		if(arr[i].equals(item) && i != firstIdx) {
+//	    			continue;
+//	    		} else {
+//	    			tmp[idx++] = arr[i];
+//	    		}
+//	    	}
+//	    	
+//	    	return tmp;
 	    	
 	    }
 	    
@@ -82,11 +88,13 @@ public class 실습_스트링배열정렬 {
 
 		static String[] removeDuplicateList(List<String> list) {
 		    String cities[] = new String[0];
+		    // list를 배열 cities[]로 변환
 		    cities = list.toArray(cities);
 		    
+		    // for문으로 도시가 중복인 것을 체크 = compareTo를 사용, equals도 상관없는 듯
 		    for(int i=0; i<cities.length; i++) {
 		    	for(int j=i+1; j<cities.length; j++) {
-		    		if(cities[i].equals(cities[j])) {
+		    		if(cities[i].compareTo(cities[j]) == 0) {
 		    			cities = removeElement1(cities, cities[i]);
 		    		}
 		    	}
@@ -100,8 +108,8 @@ public class 실습_스트링배열정렬 {
 			getList(list);
 			showList("입력후", list);
 			//sort - 오름차순으로 정렬, 내림차순으로 정렬, 중복 제거하는 코딩
-
-//		    Collections.sort(list);
+			
+//		    Collections.sort(list); Arrays.sort(); list.sort();
 
 			//배열의 정렬
 			sortList(list);
