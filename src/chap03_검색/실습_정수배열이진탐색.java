@@ -29,6 +29,8 @@ public class 실습_정수배열이진탐색 {
 		/*
 		 * 교재 109~113
 		 */
+//		data[9] = key;
+//		showList("Test: ", data);
 		resultIndex = binarySearch(data, key);
 		System.out.println("\nbinarySearch(19): result = " + resultIndex);
 		
@@ -53,7 +55,7 @@ public class 실습_정수배열이진탐색 {
 		Random rnd = new Random();
 		
 		for(int i=0; i<data.length; i++) {
-			data[i] = rnd.nextInt(50);
+			data[i] = rnd.nextInt(25);
 		}
 		
 	}
@@ -75,15 +77,40 @@ public class 실습_정수배열이진탐색 {
 	}
 
 	static int linearSearch(int[]item, int key) {
+		int idx = -1;
 		
-		return 1;
+		for(int i=0; i<item.length; i++) {
+			if(item[i] == key) {
+				idx = i;
+				break;
+			}
+		}
+		
+		
+		return idx;
 	}
 
 	static int binarySearch(int[]item, int key) {
 		int pl = 0;
 		int pr = item.length-1;
+		int mid, idx = -1;
 		
-		return 1;
+		while(pl != pr) {
+			mid = (pl+pr)/2;
+			if(item[mid] > key) {
+				pr = mid-1;
+			} else if(item[mid] < key) {
+				pl = mid+1;
+			} else {
+				idx = mid;
+				break;
+			}
+		}
+		
+		if(item[pl] == key)
+			idx = pl;
+		
+		return idx;
 
 	}
 }
