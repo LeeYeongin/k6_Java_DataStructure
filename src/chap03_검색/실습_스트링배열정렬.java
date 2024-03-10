@@ -7,12 +7,14 @@ import java.util.List;
 public class 실습_스트링배열정렬 {
 
 	    public static String[] removeElement1(String[] arr, String item) {
+	    	// 코드1: ArrayList로 변경하여 삭제하는 코드
 	    	ArrayList<String> tmp = new ArrayList<String>(Arrays.asList(arr));
 	    	tmp.remove(item);
 	    	String[] result = new String[0];
 	    	
 	    	return tmp.toArray(result);
 	    	
+	    	// 코드2: 배열인 상태로 삭제하는 코드
 //	    	int cnt = 0;
 //	    	int firstIdx = -1;
 //	    	
@@ -96,6 +98,7 @@ public class 실습_스트링배열정렬 {
 		    	for(int j=i+1; j<cities.length; j++) {
 		    		if(cities[i].compareTo(cities[j]) == 0) {
 		    			cities = removeElement1(cities, cities[i]);
+		    			// removeElement1에서 코드1을 사용할 경우 i, j -1 필요
 		    			i--;
 		    			j--;
 		    		}
