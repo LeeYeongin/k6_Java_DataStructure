@@ -96,6 +96,8 @@ public class 실습_스트링배열정렬 {
 		    	for(int j=i+1; j<cities.length; j++) {
 		    		if(cities[i].compareTo(cities[j]) == 0) {
 		    			cities = removeElement1(cities, cities[i]);
+		    			i--;
+		    			j--;
 		    		}
 		    	}
 		    }
