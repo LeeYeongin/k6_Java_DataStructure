@@ -29,8 +29,7 @@ public class 실습_정수배열이진탐색 {
 		/*
 		 * 교재 109~113
 		 */
-//		data[9] = key;
-//		showList("Test: ", data);
+
 		resultIndex = binarySearch(data, key);
 		System.out.println("\nbinarySearch(19): result = " + resultIndex);
 		
@@ -55,7 +54,7 @@ public class 실습_정수배열이진탐색 {
 		Random rnd = new Random();
 		
 		for(int i=0; i<data.length; i++) {
-			data[i] = rnd.nextInt(25);
+			data[i] = rnd.nextInt(20);
 		}
 		
 	}
@@ -86,7 +85,6 @@ public class 실습_정수배열이진탐색 {
 			}
 		}
 		
-		
 		return idx;
 	}
 
@@ -95,7 +93,7 @@ public class 실습_정수배열이진탐색 {
 		int pr = item.length-1;
 		int mid, idx = -1;
 		
-		while(pl != pr) {
+		do {
 			mid = (pl+pr)/2;
 			if(item[mid] > key) {
 				pr = mid-1;
@@ -105,10 +103,7 @@ public class 실습_정수배열이진탐색 {
 				idx = mid;
 				break;
 			}
-		}
-		
-		if(item[pl] == key)
-			idx = pl;
+		}while(pl <= pr);
 		
 		return idx;
 
