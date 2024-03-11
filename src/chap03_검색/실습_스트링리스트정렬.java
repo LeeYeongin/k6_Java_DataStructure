@@ -2,6 +2,7 @@ package chap03_검색;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 public class 실습_스트링리스트정렬 {
@@ -10,9 +11,12 @@ public class 실습_스트링리스트정렬 {
 	    	// 코드1: ArrayList로 변경하여 삭제하는 코드
 	    	// 배열을 리스트로 변환 > list.remove() 사용
 	    	// 삭제된 리스트를 배열로 변환하여 리턴
-	    	ArrayList<String> list = new ArrayList<String>(Arrays.asList(arr)); 
-	    	list.remove(item);
-
+	    	ArrayList<String> list = new ArrayList<String>(Arrays.asList(arr));
+	    	int cnt = Collections.frequency(list, item)-1; // list에 포함된 item개수 세기
+	    	while(cnt > 0) {
+	    		list.remove(item);	
+	    		cnt--;
+	    	}
 	    	return list.toArray(String[]::new);
 	    	
 	    	// 코드2: 배열인 상태로 삭제하는 코드
@@ -102,8 +106,6 @@ public class 실습_스트링리스트정렬 {
 		    	for(int j=i+1; j<cities.length; j++) {
 		    		if(cities[i].compareTo(cities[j]) == 0) { // 중복이면
 		    			cities = removeElement1(cities, cities[i]); // 중복 제거를 위해 배열 전달
-		    			// removeElement1에서 코드1을 사용할 경우 i, j -1 필요
-		    			j--;
 		    		}
 		    	}
 		    	
@@ -112,7 +114,6 @@ public class 실습_스트링리스트정렬 {
 //		    	while(j<cities.length) {
 //		    		if(cities[i].compareTo(cities[j]) == 0) {
 //		    			cities = removeElement1(cities, cities[i]);
-//		    			j--;
 //		    		}
 //		    		j++;
 //		    	}
