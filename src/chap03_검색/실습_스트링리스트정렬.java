@@ -76,7 +76,7 @@ public class 실습_스트링리스트정렬 {
 	    	
 	    	for(int i=0; i<cities.length; i++) {
 	    		for(int j=i+1; j<cities.length; j++) {
-	    			if(cities[i].compareToIgnoreCase(cities[j]) > 0) {
+	    			if(cities[i].compareTo(cities[j]) > 0) {
 	    				swap(cities, i, j);
 	    			}
 	    		}
