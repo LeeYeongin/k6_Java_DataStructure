@@ -28,7 +28,11 @@ class PhyscData2 implements Comparable<PhyscData2>{
 	
 	@Override
 	public int compareTo(PhyscData2 p) {
-		if(vision > p.vision)
+		if(name.compareTo(p.name)>0)
+			return 1;
+		else if(name.compareTo(p.name)<0)
+			return -1;
+		else if(vision > p.vision)
 			return 1;
 		else if(vision < p.vision)
 			return -1;
