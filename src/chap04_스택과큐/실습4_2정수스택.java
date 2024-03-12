@@ -164,7 +164,7 @@ public class 실습4_2정수스택 {
 					System.out.println("스택이 비어있습니다." + e.getMessage());
 					e.printStackTrace();
 				}
-				s.dump();
+//				s.dump();
 				break;
 			}
 		}
