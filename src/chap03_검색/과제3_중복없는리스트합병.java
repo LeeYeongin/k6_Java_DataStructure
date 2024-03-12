@@ -173,8 +173,10 @@ public class 과제3_중복없는리스트합병 {
 			ByteBuffer buffer = ByteBuffer.allocate(bufferSize);
 			writeFile(list3, buffer);
 			
+			// FileOutputStream 이용
 			FileOutputStream file = new FileOutputStream("c.txt");
-			FileChannel channel = file.getChannel();
+			FileChannel channel = file.getChannel(); 
+			
 			channel.write(buffer);
 			file.close();
 		} catch (IOException e) {
@@ -204,7 +206,16 @@ public class 과제3_중복없는리스트합병 {
 			buffer.put(sx.getBytes());
 			buffer.put(b.getBytes());
 		}
-		buffer.flip();
+		buffer.flip(); // 읽기 모드로 변경
+	/*	L : limit, P : position
+	 * 			L<------L
+	 *	P<------P
+	 * 	|0|1|2|3|4|5|6|7|
+	 *	|a|b|c|d| | | | |
+	 *	
+	 *	L = P
+	 *	P = 0
+	 */
 	}
 	
 	static int binarySearch(String[] st, String item) {
