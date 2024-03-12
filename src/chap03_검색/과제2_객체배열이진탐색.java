@@ -54,12 +54,12 @@ class FruitNameComparator2 implements Comparator<Fruit4>{
 public class 과제2_객체배열이진탐색 {
 
 	private static void sortData(Fruit4[] arr, Comparator<Fruit4> cc_price) {
-		for(int i=0; i<arr.length; i++) {
-			for(int j=i+1; j<arr.length; j++) {
-				if(cc_price.compare(arr[i], arr[j])>0)
-					swap(arr, i, j);
-			}
-		}
+//		for(int i=0; i<arr.length; i++) {
+//			for(int j=i+1; j<arr.length; j++) {
+//				if(cc_price.compare(arr[i], arr[j])>0)
+//					swap(arr, i, j);
+//			}
+//		}
 	}
 	
 	static void swap(Fruit4[]arr, int ind1, int ind2) {
