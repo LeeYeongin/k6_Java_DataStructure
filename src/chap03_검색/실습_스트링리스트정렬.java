@@ -17,7 +17,8 @@ public class 실습_스트링리스트정렬 {
 	    		list.remove(item);	
 	    		cnt--;
 	    	}
-	    	return list.toArray(String[]::new);
+	    	return list.toArray(String[]::new); // String[]::new = 메소드 레퍼렌스(람다식: 함수형 인터페이스)
+	    	
 	    	
 	    	// 코드2: 배열인 상태로 삭제하는 코드
 //	    	int cnt = 0;
@@ -106,9 +107,8 @@ public class 실습_스트링리스트정렬 {
 			 * 리스트를 배열로 변환 > 배열에서 중복을 찾는다
 			 */
 		    String cities[] = new String[0];
-		    // list를 배열 cities[]로 변환
-		    cities = list.toArray(cities);
-		    
+		    cities = list.toArray(cities); // list를 배열 cities[]로 변환
+		    // toArray : list를 배열로 변환 > return해줄 배열의 사이즈 확인 > 사이즈가 작으면 새롭게 공간을 할당하여 return
 		    // for문으로 도시가 중복인 것을 체크 = compareTo를 사용
 		    for(int i=0; i<cities.length; i++) {
 		    	for(int j=i+1; j<cities.length; j++) {
