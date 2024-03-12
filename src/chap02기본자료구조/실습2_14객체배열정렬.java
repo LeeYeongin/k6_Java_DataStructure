@@ -59,7 +59,6 @@ public class 실습2_14객체배열정렬 {
 	public static void main(String[] args) {
 		PhyscData[] data = {
 				new PhyscData("홍길동", 162, 0.3),
-				new PhyscData("홍길동", 162, 0.3), // 내가 추가한 코드
 				new PhyscData("홍동", 164, 1.3),
 				new PhyscData("홍길", 152, 0.7),
 				new PhyscData("김홍길동", 172, 0.3),
