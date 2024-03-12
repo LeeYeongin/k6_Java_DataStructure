@@ -18,7 +18,7 @@ import java.util.List;
 
 public class 과제3_중복없는리스트합병 {
 //string 정렬, binary search 구현
-//1단계: string, 2단계: string 객체,  Person 객체들의 list\
+//1단계: string, 2단계: string 객체,  Person 객체들의 list
 //file1: 서울,북경,상해,서울,도쿄, 뉴욕,부산
 //file2: 런던, 로마,방콕, 도쿄,서울,부산
 //file > string split() > 배열 > ArrayList > sort > iterator 사용하여 merge > 중복 제거 > string 배열 > file에 저장
@@ -52,7 +52,10 @@ public class 과제3_중복없는리스트합병 {
 		}
 	}
 	
-	static List<String> mergeList(List<String> list1, List<String> list2) {
+	static List<String> mergeList(List<String> list1, List<String> list2) {  
+		/*
+		 * list3 = merge(list1, list2);으로서 새로운 리스트에 정렬 값 순서로 merge하는 알고리즘 구현 
+		 */
 		ArrayList<String> list3 = new ArrayList<>();
 		
 		int i = 0, j = 0;
@@ -75,6 +78,7 @@ public class 과제3_중복없는리스트합병 {
 					list3.add(list1.get(i));
 					i++;
 				} else {
+					// 중복되는 값은 하나만 넣기
 					list3.add(list1.get(i));
 					i++;
 					j++;
@@ -85,26 +89,38 @@ public class 과제3_중복없는리스트합병 {
 		return list3;
 		
 	}
+	
 	public static void main(String[] args) {
 		try {
+			/*
+			 * 자바 교재 547: 이클립스 > edu 프로젝트 - 마우스 우측 > New>File >a.txt 생성
+			 * 입력 데이터를 다음과 같이 만든다:
+			 *    서울,도쿄,북경,상해,서울,도쿄, 뉴욕,부산
+			 *        상해,도쿄
+			 *          서울, 도쿄
+			 * 자바 교재 580: Path 클래스 - 파이썬 유사 
+			 */
 			Path input1 = Paths.get("a1.txt");
 			byte[] bytes1 = Files.readAllBytes(input1);
 
 			Path input2 = Paths.get("a2.txt");
 			byte[] bytes2 = Files.readAllBytes(input2);
-			
+			//readAllBytes: 파일의 모든 바이트를 읽어오는 메서드입니다. 
+			//이 메서드는 파일을 열고 파일의 크기만큼 바이트를 읽어서 바이트 배열로 반환합니다.
 			String s1 = new String(bytes1);
 			String s2 = new String(bytes2);
 			
 			System.out.println("입력 스트링: s1 = " + s1);
 			System.out.println("입력 스트링: s2 = " + s2);
-			String[] sarray1 = s1.split("[,\\s]+\r\n");// 자바 regex \n으로 검색
-			String[] sarray2 = s2.split("[,\\s]+\r\n");//file에서 enter키는 \r\n으로 해야 분리됨
+//			String[] sarray1 = s1.split("[,\\s]+\r\n"); // 자바 regex \n으로 검색
+//			String[] sarray2 = s2.split("[,\\s]+\r\n"); //file에서 enter키는 \r\n으로 해야 분리됨 (이 정규식으로 안돼서 아래 정규식으로 실행)
+			String[] sarray1 = s1.split("[,\\s]+");
+			String[] sarray2 = s2.split("[,\\s]+");
 
 			showData("스트링 배열 sarray1", sarray1);
 			showData("스트링 배열 sarray2", sarray2);
 
-			trimSpace(sarray1);
+			trimSpace(sarray1); // 공백 제거
 			trimSpace(sarray2);
 
 			showData("trimSpace() 실행후 :스트링 배열 sarray1", sarray1);
@@ -144,8 +160,12 @@ public class 과제3_중복없는리스트합병 {
 
 			// ArrayList를 배열로 전환
 			String[] st = list3.toArray(new String[list3.size()]);
+			
 			// binary search 구현
-			//binarySearch(st, st.length, "key");
+			String item = "도쿄";
+			int idx = binarySearch(st,item);
+			System.out.println("\nbinarySearch로 찾은 "+item+"의 위치: "+ (idx < 0 ? "찾을 수 없습니다." : idx));
+			
 			// 정렬된 list3을 file에 출력하는 코드 완성
 			System.out.println("\n" + "file에 출력:");
 			int bufferSize = 10240;
@@ -162,14 +182,14 @@ public class 과제3_중복없는리스트합병 {
 		}
 	}
 	
-	private static void showList(String string, List<String> list1) {
+	static void showList(String string, List<String> list1) {
 		System.out.println(string);
 		for(String st: list1) {
 			System.out.println(st);
 		}
 	}
 	
-	private static void showData(String string, String[] sarray1) {
+	static void showData(String string, String[] sarray1) {
 		System.out.println(string);
 		for(String s:sarray1) {
 			System.out.println(s);
@@ -186,4 +206,24 @@ public class 과제3_중복없는리스트합병 {
 		}
 		buffer.flip();
 	}
+	
+	static int binarySearch(String[] st, String item) {
+		int pl = 0, pr = st.length;
+		int mid, idx = -1;
+		
+		do {
+			mid = (pl + pr) / 2;
+			if(st[mid].compareTo(item) > 0) {
+				pr = mid -1;
+			} else if(st[mid].compareTo(item) < 0) {
+				pl = mid + 1;
+			} else {
+				idx = mid;
+				break;
+			}
+		} while(pl <= pr);
+		return idx;
+	}
+	
+	
 }
