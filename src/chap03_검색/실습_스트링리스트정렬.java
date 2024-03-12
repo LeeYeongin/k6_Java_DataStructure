@@ -74,6 +74,9 @@ public class 실습_스트링리스트정렬 {
 	    	String cities[] = new String[0];
 	    	cities = list.toArray(cities);
 	    	
+	    	// Arrays.sort메소들 사용하여 바로 sort도 가능
+//	    	Arrays.sort(cities);
+	  
 	    	for(int i=0; i<cities.length; i++) {
 	    		for(int j=i+1; j<cities.length; j++) {
 	    			if(cities[i].compareTo(cities[j]) > 0) {
@@ -85,6 +88,11 @@ public class 실습_스트링리스트정렬 {
 	    	// 정렬된 배열을 다시 리스트에 적용
 	        list.clear();
 	        list.addAll(Arrays.asList(cities));
+	        
+	        // 아래 for문으로도 정렬된 값을 list에 대입 가능
+//	        for(int i=0; i<list.size(); i++) {
+//	        	list.set(i, cities[i]);
+//	        }
 	    }
 	    
 	    private static void swap(String[] cities, int i, int j) {
