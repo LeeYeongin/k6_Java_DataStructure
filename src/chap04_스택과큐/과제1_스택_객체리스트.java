@@ -168,7 +168,7 @@ class objectStack{
 
 
 }
-public class 스택_객체리스트 {
+public class 과제1_스택_객체리스트 {
 
 	public static void main(String[] args) {
 		Scanner stdIn = new Scanner(System.in);
