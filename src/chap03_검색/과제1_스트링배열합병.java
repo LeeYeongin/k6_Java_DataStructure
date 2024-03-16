@@ -17,7 +17,6 @@ public class 과제1_스트링배열합병 {
     	int i = 0, j = 0,k =0;
     	String[] s3 = new String[10];
     	
-//    	while 문 사용해서 남은 요소가 있는지 확인..?
     	while(i<s1.length || j<s2.length) {
     		if(i == s1.length) { // i의 요소가 다 사용됐을떄
     			s3[i+j] = s2[j];
