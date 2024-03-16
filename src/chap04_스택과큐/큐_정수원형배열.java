@@ -54,7 +54,7 @@ class IntQueue3 {
 		
 		que[rear++] = x;
 		
-		System.out.println("rear: " + rear + " ,front: " + front);
+		System.out.println("\nrear: " + rear + " ,front: " + front);
 				
 		return x;
 	}
@@ -66,8 +66,11 @@ class IntQueue3 {
 		
 		int value = que[front];
 		
-		if(front++ >= capacity)
+		if(++front >= capacity)
 			front = 0;
+		
+		System.out.println("\nrear: " + rear + " ,front: " + front);
+		
 	
 		if(front == rear)
 			isEmptyTag = true;
@@ -76,10 +79,18 @@ class IntQueue3 {
 
 	//--- 큐에서 데이터를 피크(프런트 데이터를 들여다봄) ---//
 	public int peek() throws EmptyIntQueue3Exception {
+		if (isEmpty())
+			throw new EmptyIntQueue3Exception("peek: Queue is empty");
 		return que[front];
 	}
 
 	//--- 큐를 비움(clear) ---//
+	public void clear() throws EmptyIntQueue3Exception {
+		if (isEmpty())
+			throw new EmptyIntQueue3Exception("clear: Queue is empty");
+		front = rear = 0;
+		isEmptyTag = true;
+	}
 
 	//--- 큐에서 x를 검색하여 인덱스(찾지 못하면 –1)를 반환 ---//
 	public int indexOf(int x) {
@@ -144,6 +155,8 @@ public class 큐_정수원형배열 {
 			System.out.printf("현재 데이터 개수: %d / %d\n", oq.size(), oq.getCapacity());
 			System.out.print("(1)인큐　(2)디큐　(3)피크　(4)덤프　(5)clear  (0)종료: ");
 			int menu = stdIn.nextInt();
+			if(menu == 0)
+				break;
 			switch (menu) {
 			case 1: // 인큐
 				rndx = random.nextInt(20);
@@ -151,6 +164,7 @@ public class 큐_정수원형배열 {
 				try {
 					oq.enque(rndx);
 				} catch(IntQueue3.OverflowIntQueue3Exception e) {
+					System.out.println(e.getMessage());
 					System.out.println("stack이 가득찼있습니다.");
 				}
 				break;
@@ -160,25 +174,34 @@ public class 큐_정수원형배열 {
 					p = oq.deque();
 					System.out.println("디큐한 데이터는 " + p + "입니다.");
 				} catch (IntQueue3.EmptyIntQueue3Exception e) {
+					System.out.println(e.getMessage());
 					System.out.println("큐가 비어 있습니다.");
 				}
 				break;
 
 			case 3: // 피크
-
+				try {
+					p = oq.peek();
+					System.out.println("피크한 데이터는 " + p + "입니다.");
+				} catch (IntQueue3.EmptyIntQueue3Exception e) {
+					System.out.println(e.getMessage());
+					System.out.println("큐가 비어 있습니다.");
+				}
 				break;
-
 			case 4: // 덤프
 				try {
 					oq.dump();
 				} catch (IntQueue3.EmptyIntQueue3Exception e) {
 					System.out.println(e.getMessage());
-//					System.out.println("queue이 비어있습니다." + e.getMessage());
-//					e.printStackTrace();
+					System.out.println("큐가 비어 있습니다.");
 				}
 				break;
 			case 5: //clear
-
+				try {
+					oq.clear();
+				} catch (IntQueue3.EmptyIntQueue3Exception e) {
+					System.out.println(e.getMessage());
+				}
 				break;
 			default:
 				break;
