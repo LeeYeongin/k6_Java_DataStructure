@@ -167,29 +167,14 @@ public class 과제1_QueenEight {
 		Point p = new Point(ix, iy);// 현 위치를 객체로 만들고
 		d[ix][iy] = 1;// 현 위치에 queen을 넣었다는 표시를 하고
 		count++;
-//		iy++;
 		ix++;
 		st.push(p);// 스택에 현 위치 객체를 push
 		while (true) { // 교제 175페이지 코드에 주석으로 알고리즘 로직을 작성
 			if(ix==0 && iy==8)
 				break;
 			
-			if(count==8) { // 8개 모두 배치시 다른 경우의 수 찾기
-				Point tmp = st.pop();
-				count--;
-				numberSolutions++;
-				
-				System.out.println("[" + numberSolutions + "]");
-				showQueens(d);
-				System.out.println();
-				
-				ix = tmp.getX();
-				iy = tmp.getY();
-				d[ix][iy] = 0;
-				iy++;
-			}
-			
 			iy = nextMove(d, ix, iy);
+			
 			if (iy >= 0) { // 체스판의 다음 행에 퀸을 배치할 수 있으면
 				p = new Point(ix, iy); // 가능한 다음행 위치를 객체로 생성
 				st.push(p); // 스택에 현 위치 객체를 push
@@ -197,30 +182,37 @@ public class 과제1_QueenEight {
 				count++;
 				ix++;
 				iy = 0;
-				continue;
+				if(count != 8)
+					continue;
 			}
 			
-			if (iy < 0 || count == 8) {
-				// 다음 행에 퀸을 배치할 위치가 없으므로 현재 위치를 스택에서 제거
-				// pop()한 위치를 사용해서 다음 열을 조사하고 더 이상 없으면 이전 행으로 돌아감
+			if (iy < 0 || count == 8) { // 다음 행에 퀸을 배치할 위치가 없거나 8개를 모두 배치하였다면 pop()
 				
+				// 8개를 모두 배치하였을 때 
+				if(count == 8) {
+					numberSolutions++;
+					
+					System.out.println("[" + numberSolutions + "]");
+					showQueens(d); // queen 배치 출력
+					System.out.println();
+				}
+				
+				// pop()한 위치를 사용해서 다음 열을 조사하고 더 이상 없으면 이전 행으로 돌아감
 				Point tmp = st.pop();
 				count--;
+				
 				ix = tmp.getX();
 				iy = tmp.getY();
 				d[ix][iy] = 0;
 				iy++;
 				continue;
 			}
-			
-			
-
 		}
 
 	}
 
 	// 배열 d에서 행 cx, 열 cy에 퀸을 남서, 북동 대각선으로 배치할 수 있는지 조사
-	public static boolean checkDiagSW(int[][] d, int cx, int cy) { // x++, y-- or x--, y++ where 0<= x,y <= 7
+	public static boolean checkDiagSW(int[][] d, int cx, int cy) { // x++, y++ or x--, y--
 		int j = cy, i = cx;
 
 		while (j < 8 && i < 8) {
@@ -244,7 +236,7 @@ public class 과제1_QueenEight {
 	}
 
 	// 배열 d에서 행 cx, 열 cy에 퀸을 남동, 북서 대각선으로 배치할 수 있는지 조사
-	public static boolean checkDiagSE(int[][] d, int cx, int cy) {// x++, y++ or x--, y--
+	public static boolean checkDiagSE(int[][] d, int cx, int cy) { // x++, y-- or x--, y++ where 0<= x,y <= 7
 		int i = cx, j = cy;
 
 		while (j >= 0 && i < 8) {
