@@ -3,27 +3,38 @@ package chap05_recursive;
 import java.util.ArrayList;
 import java.util.List;
 
-enum Directions2 {N, NE, E, SE, S, SW, W, NW}
+enum Directions2 {
+	N, NE, E, SE, S, SW, W, NW
+}
+
 class Items3 {
 	int x;
 	int y;
 	int dir;
+
 	public Items3(int x, int y, int d) {
-		this.x = x; this.y = y; this.dir = d;
+		this.x = x;
+		this.y = y;
+		this.dir = d;
 	}
+
 	@Override
 	public String toString() {
 		return "x = " + x + ", y = " + y + ", dir = " + dir;
 	}
 }
+
 class Offsets3 {
 	int a;
 	int b;
+
 	public Offsets3(int a, int b) {
-		this.a = a; this.b = b;
+		this.a = a;
+		this.b = b;
 	}
 }
-	class StackList {
+
+class StackList {
 	private List<Items3> data; // 스택용 배열
 	private int capacity; // 스택의 크기
 	private int top; // 스택 포인터
@@ -121,98 +132,120 @@ class Offsets3 {
 	}
 }
 
-	public class 과제2_MazingProblem {
+public class 과제2_MazingProblem {
 
-		static Offsets3[] moves = new Offsets3[8];//static을 선언하는 이유를 알아야 한다
+	// static으로 선언하면 인스턴스를 생성하지 않고 클래스 멤버에 접근가능
+	static Offsets3[] moves = new Offsets3[8];// static을 선언하는 이유를 알아야 한다
 
-		public static void path(int[][] maze, int[][] mark, int ix, int iy) {
+	public static void path(int[][] maze, int[][] mark, int ix, int iy) {
 
-			mark[1][1] = 1;
-			StackList st = new StackList(50);
-			Items3 temp = new Items3(0, 0, 0);//N :: 0
-			temp.x = 1;
-			temp.y = 1;
-			temp.dir = 2;//E:: 2
-			mark[temp.x][temp.y] = 2;//미로 찾기 궤적은 2로 표시
-			st.push(temp);
-
-			while (!st.isEmpty()) // stack not empty
+		mark[1][1] = 1;
+		StackList st = new StackList(50);
+		Items3 temp = new Items3(0, 0, 0);// N :: 0
+		temp.x = 1;
+		temp.y = 1;
+		temp.dir = 2;// E:: 2
+		mark[temp.x][temp.y] = 2;// 미로 찾기 궤적은 2로 표시
+		st.push(temp);
+		boolean flag = false;
+		while (!st.isEmpty()) // stack not empty
+		{
+			Items3 tmp = st.pop(); // unstack
+			int i = tmp.x;
+			int j = tmp.y;
+			int d = tmp.dir;
+			mark[i][j] = 1;//backtracking 궤적은 1로 표시
+			while (d < 8) // moves forward
 			{
-				Items3 tmp = st.pop(); // unstack
-				int i = tmp.x;
-				int j = tmp.y;
-				int d = tmp.dir;
-				mark[i][j] = 1;//backtracking 궤적은 1로 표시
-				while (d < 8) // moves forward
-				{
-
-					if ((g == ix) && (h == iy)) { // reached exit
-													// output path
-
-					}
-					if ((maze[g][h] == 0) && (mark[g][h] == 0)) { // new position
-
-
-					} else
-
+				int g = i + moves[d].a;
+				int h = j + moves[d].b;
+				if ((g == ix+1) && (h == iy+1)) { // reached exit
+					mark[g][h] = 2;
+					flag = true;
+					break;							// output path
+				}
+				
+				if ((maze[g][h] == 0) && (mark[g][h] == 0)) { // new position
+					Items3 t = new Items3(i, j, d+1);
+//					mark[g][h] = 2;
+					mark[i][j] = 2;
+					st.push(t);
+					i = g; j = h;
+					d = 0;
+				} else {
+					d++;
 				}
 			}
+			
+			if(flag)
+				break;
 			System.out.println("no path in maze ");
-		}
-		static void showMatrix(int[][]d, int row, int col) {
-			for (int i = 0; i <= row; i++) {
-				for (int j = 0; j <= col; j++) {
-					System.out.print(d[i][j] + " ");
-
-				}
-				System.out.println();
-			}
-		}
-		public static void main(String[] args) {
-			int[][] maze = new int[14][17];
-			int[][] mark = new int[14][17];
-
-			int input[][] = { // 12 x 15
-					{ 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1 },
-					{ 1, 0, 0, 0, 1, 1, 0, 1, 1, 1, 0, 0, 1, 1, 1 },
-					{ 0, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1 },
-					{ 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 0 },
-					{ 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1 },
-					{ 0, 0, 1, 1, 0, 1, 1, 1, 0, 1, 0, 0, 1, 0, 1 },
-					{ 0, 0, 1, 1, 0, 1, 1, 1, 0, 1, 0, 0, 1, 0, 1 },
-					{ 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1 },
-					{ 0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1 },
-					{ 1, 1, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0 },
-					{ 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0 },
-					{ 0, 1, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0 }};
-			for (int ia = 0; ia < 8; ia++)
-			moves[ia] = new Offsets3(0, 0);//배열에 offsets 객체를 치환해야 한다.
-			moves[0].a = -1;	moves[0].b = 0;
-			moves[1].a = -1;	moves[1].b = 1;
-			moves[2].a = 0;		moves[2].b = 1;
-			moves[3].a = 1;		moves[3].b = 1;
-			moves[4].a = 1;		moves[4].b = 0;
-			moves[5].a = 1;		moves[5].b = -1;
-			moves[6].a = 0;		moves[6].b = -1;
-			moves[7].a = -1;	moves[7].b = -1;
-			//Directions d;
-			//d = Directions.N;
-			//d = d + 1;//java는 지원안됨
-			for (int i = 0; i < 14; i++) {
-				for (int j = 0; j < 17; j++) {
-
-					// input[][]을 maze[][]로 변환
-				}
-			}
-			System.out.println("maze[12,15]::");
-			showMatrix(maze, 13, 16);
-		
-			System.out.println("mark::");
-			showMatrix(mark, 13, 16);
-
-			path(maze, mark, 12, 15);
-			System.out.println("mark::");
-			showMatrix(mark, 12, 15);
 		}
 	}
 
+	static void showMatrix(int[][] d, int row, int col) {
+		for (int i = 0; i <= row; i++) {
+			for (int j = 0; j <= col; j++) {
+				System.out.print(d[i][j] + " ");
+
+			}
+			System.out.println();
+		}
+	}
+
+	public static void main(String[] args) {
+		int[][] maze = new int[14][17];
+		int[][] mark = new int[14][17];
+
+		int input[][] = { // 12 x 15
+				{ 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1 }, 
+				{ 1, 0, 0, 0, 1, 1, 0, 1, 1, 1, 0, 0, 1, 1, 1 },
+				{ 0, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1 }, 
+				{ 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 0 },
+				{ 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1 }, 
+				{ 0, 0, 1, 1, 0, 1, 1, 1, 0, 1, 0, 0, 1, 0, 1 },
+				{ 0, 0, 1, 1, 0, 1, 1, 1, 0, 1, 0, 0, 1, 0, 1 }, 
+				{ 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1 },
+				{ 0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1 }, 
+				{ 1, 1, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0 },
+				{ 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0 }, 
+				{ 0, 1, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0 } };
+
+		for (int ia = 0; ia < 8; ia++)
+			moves[ia] = new Offsets3(0, 0);// 배열에 offsets 객체를 치환해야 한다.
+		moves[0].a = -1;moves[0].b = 0;
+		moves[1].a = -1;moves[1].b = 1;
+		moves[2].a = 0;moves[2].b = 1;
+		moves[3].a = 1;moves[3].b = 1;
+		moves[4].a = 1;moves[4].b = 0;
+		moves[5].a = 1;moves[5].b = -1;
+		moves[6].a = 0;moves[6].b = -1;
+		moves[7].a = -1;moves[7].b = -1;
+		// Directions d;
+		// d = Directions.N;
+		// d = d + 1;//java는 지원안됨
+		for (int i = 0; i < 14; i++) {
+			for (int j = 0; j < 17; j++) {
+				// input[][]을 maze[][]로 변환
+				if (i == 0 || i == 13 || j == 0 || j == 16)
+					maze[i][j] = 1;
+				else
+					maze[i][j] = input[i - 1][j - 1];
+
+				mark[i][j] = 0;
+
+			}
+		}
+		System.out.println("maze[12,15]::");
+		showMatrix(maze, 13, 16);
+
+		System.out.println();
+		System.out.println("mark::");
+		showMatrix(mark, 13, 16);
+
+		System.out.println();
+		path(maze, mark, 12, 15);
+		System.out.println("mark::");
+		showMatrix(mark, 13, 16);
+	}
+}
