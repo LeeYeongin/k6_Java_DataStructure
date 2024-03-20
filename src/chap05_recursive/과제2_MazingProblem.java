@@ -232,8 +232,6 @@ public class 과제2_MazingProblem {
 				else
 					maze[i][j] = input[i - 1][j - 1];
 
-				mark[i][j] = 0;
-
 			}
 		}
 		System.out.println("maze[12,15]::");
