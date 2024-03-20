@@ -159,7 +159,8 @@ public class 과제2_MazingProblem {
 			{
 				int g = i + moves[d].a;
 				int h = j + moves[d].b;
-				if ((g == ix+1) && (h == iy+1)) { // reached exit
+				if ((g == ix) && (h == iy)) { // reached exit
+					mark[i][j] = 2;
 					mark[g][h] = 2;
 					flag = true;
 					break;							// output path
@@ -167,7 +168,6 @@ public class 과제2_MazingProblem {
 				
 				if ((maze[g][h] == 0) && (mark[g][h] == 0)) { // new position
 					Items3 t = new Items3(i, j, d+1);
-//					mark[g][h] = 2;
 					mark[i][j] = 2;
 					st.push(t);
 					i = g; j = h;
