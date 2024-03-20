@@ -148,6 +148,7 @@ public class 과제2_MazingProblem {
 		mark[temp.x][temp.y] = 2;// 미로 찾기 궤적은 2로 표시
 		st.push(temp);
 		boolean flag = false;
+		
 		while (!st.isEmpty()) // stack not empty
 		{
 			Items3 tmp = st.pop(); // unstack
