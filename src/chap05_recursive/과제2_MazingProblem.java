@@ -170,6 +170,7 @@ public class 과제2_MazingProblem {
 				if ((maze[g][h] == 0) && (mark[g][h] == 0)) { // new position
 					Items3 t = new Items3(i, j, d+1);
 					mark[i][j] = 2;
+//					mark[g][h] = 2;
 					st.push(t);
 					i = g; j = h;
 					d = 0;

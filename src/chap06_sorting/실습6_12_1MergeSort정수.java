@@ -18,7 +18,7 @@ public class 실습6_12_1MergeSort정수 {
 		while (p > righta && q <= rightb) temp[ix++] = a[q++];
 		while (q > rightb && p <= righta) temp[ix++] = a[p++];
 		System.out.println();
-		for (int j = 0; j < ix; j++) {
+		for (int j = 0; j < ix; j++) { // temp를 a에 복사
 			a[lefta+ j] = temp[j];
 			System.out.print(" "+ a[lefta+j]);
 		}
@@ -29,9 +29,9 @@ public class 실습6_12_1MergeSort정수 {
 	static void MergeSort(int[] a, int left, int right) {
 		int mid = (left+right)/2;
 		if (left == right) return;
-		MergeSort(a, left, mid);
+		MergeSort(a, left, mid); // 정렬
 		MergeSort(a, mid+1, right);
-		merge(a, left, mid, mid+1, right);
+		merge(a, left, mid, mid+1, right); // 정렬된것들 합치기
 		return;
 	}
 
