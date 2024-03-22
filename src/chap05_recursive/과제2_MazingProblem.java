@@ -149,33 +149,42 @@ public class 과제2_MazingProblem {
 		st.push(temp);
 		boolean flag = false;
 		
+		int d = 0;
+		int i = temp.x;
+		int j = temp.y;
+		
 		while (!st.isEmpty()) // stack not empty
 		{
-			Items3 tmp = st.pop(); // unstack
-			int i = tmp.x;
-			int j = tmp.y;
-			int d = tmp.dir;
-			mark[i][j] = 1;//backtracking 궤적은 1로 표시
+			if(d ==8) {				
+				Items3 tmp = st.pop(); // unstack
+				i = tmp.x;
+				j = tmp.y;
+				d = tmp.dir;
+				mark[i][j] = 1;//backtracking 궤적은 1로 표시
+			}
+			
+			temp = st.peek();
+			i = temp.x;
+			j = temp.y;
+			
 			while (d < 8) // moves forward
 			{
 				int g = i + moves[d].a;
 				int h = j + moves[d].b;
-				if ((g == ix) && (h == iy)) { // reached exit
-					mark[i][j] = 2;
-					mark[g][h] = 2;
-					flag = true;
-					break;							// output path
-				}
 				
 				if ((maze[g][h] == 0) && (mark[g][h] == 0)) { // new position
-					Items3 t = new Items3(i, j, d+1);
-					mark[i][j] = 2;
-//					mark[g][h] = 2;
+					Items3 t = new Items3(g, h, d);
+					mark[g][h] = 2;
 					st.push(t);
 					i = g; j = h;
 					d = 0;
 				} else {
 					d++;
+				}
+				
+				if ((g == ix) && (h == iy)) { // reached exit
+					flag = true;
+					break;							// output path
 				}
 			}
 			
