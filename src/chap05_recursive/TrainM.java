@@ -155,7 +155,7 @@ public class TrainM {
 			int i = tmp.x;
 			int j = tmp.y;
 			int d = tmp.dir;
-			System.out.printf("i: %d, j: %d, d: %d", i, j, d);
+			System.out.printf("i: %d, j: %d, d: %d ", i, j, d);
 			mark[i][j] = 1; // backtracking 궤적은 1로 표시
 			
 //			if(!st.isEmpty()) {				

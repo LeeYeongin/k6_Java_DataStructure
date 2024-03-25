@@ -148,11 +148,7 @@ public class 과제2_MazingProblem2 {
 		mark[temp.x][temp.y] = 2;// 미로 찾기 궤적은 2로 표시
 		st.push(temp);
 		
-		boolean flag = false;
-		int check = 0;
-//		int g = 0, h = 0;
-		
-		while (!st.isEmpty() && !flag) // stack not empty
+		while (!st.isEmpty()) // stack not empty
 		{
 			Items32 tmp = st.pop(); // unstack
 			int i = tmp.x;
@@ -170,24 +166,20 @@ public class 과제2_MazingProblem2 {
 					mark[i][j] = 2;
 					st.push(t);
 					i = g; j = h;
-					d = 0; check = 0;	
+					d = 0;
 				} else {
-					d++;
-					check++;
+					if(++d >= 8) { // 방문은 하였으나 막다른 길이라 stack에 push는 되지않은경우 (막다른길)
+						mark[i][j] = 1;
+						break;
+					}
 				}
 				
 				if ((g == ix) && (h == iy)) { // reached exit
 					mark[g][h] = 2;
 					st.push(new Items32(g, h, 0));
-					flag = true;
-					st.dump();
-					break;							// output path
+					return;							// output path
 				}
 				
-			}
-			
-			if(check == 8) { // 방문은 하였으나 막다른 길이라 stack에 push는 되지않은경우
-				mark[i][j] = 1;
 			}
 
 			System.out.println("no path in maze ");
