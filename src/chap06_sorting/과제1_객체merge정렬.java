@@ -4,24 +4,27 @@ package chap06_sorting;
  * 6장 구현 실습과제1 
  */
 class PhyscData implements Comparable<PhyscData> {
-	public PhyscData(String string, int i, double d) {
-		// TODO Auto-generated constructor stub
-	}
 
 	String name; // 이름
 	int height; // 키
 	double vision; // 시력
 
+	public PhyscData(String name, int h, double v) {
+		this.name = name;
+		this.height = h;
+		this.vision = v;
+	}
+	
 	@Override
 	public int compareTo(PhyscData o) {
 
-		if(name.compareTo(o.name) > 0) // 이름 비교
-			return 1;
-		else if(name.compareTo(o.name) < 0)
-			return -1;
-		else if(height > o.height) // 키 비교
+		if(height > o.height) // 키 비교
 			return 1;
 		else if(height < o.height)
+			return -1;
+		else if(name.compareTo(o.name) > 0) // 이름 비교
+			return 1;
+		else if(name.compareTo(o.name) < 0)
 			return -1;
 		else if(Float.compare(height, o.height) > 0) // 시력 비교
 			return 1;
@@ -36,10 +39,30 @@ public class 과제1_객체merge정렬 {
 	// --- 배열 요소 a[idx1]와 a[idx2]의 값을 교환 ---//
 	static void merge(PhyscData[] a, int lefta, int righta, int leftb, int rightb) {
 		PhyscData temp[] = new PhyscData[a.length];
-		int q=lefta, p=leftb;
+		int idx=0;
+		int l=lefta, r=leftb;
 		
-		while(q<righta && p<rightb) {
-			
+		while(l<=righta && r<=rightb) {
+			if(a[l].compareTo(a[r]) > 0) 
+				temp[idx++] = a[r++]; 
+			else if(a[l].compareTo(a[r]) < 0) 
+				temp[idx++] = a[l++];
+			else {
+				temp[idx++] = a[l++];
+				temp[idx++] = a[r++];
+			}
+		}
+		
+		while(l<=righta && r>rightb) {
+			temp[idx++] = a[l++];
+		}
+		
+		while(r<=rightb && l>righta) {
+			temp[idx++] = a[r++];
+		}
+		
+		for (int j = 0; j < idx; j++) { // temp를 a에 복사
+			a[lefta+ j] = temp[j];
 		}
 	}
 
@@ -61,7 +84,7 @@ public class 과제1_객체merge정렬 {
 		int nx = x.length;
 
 		MergeSort(x, 0, nx - 1); // 배열 x를 퀵정렬
-		System.out.println("오름차순으로 정렬했습니다.");
+		System.out.println("오름차순으로 정렬했습니다."); // 키 > 이름 > 시력 순으로 오름차순
 		System.out.println("■ 신체검사 리스트 ■");
 		System.out.println(" 이름     키  시력");
 		System.out.println("------------------");
