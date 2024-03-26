@@ -217,7 +217,7 @@ public class 과제2_Merge정렬다항식 {
 		zTerms = MultiplyPolynomial(x,y,z);//다항식 곱셈 z = x * y
 		MergeSort(z, 0, zTerms); // 배열 x를 퀵정렬
 		ShowPolynomial("곱셈후 다항식 z = ", z, zTerms);
-		double result = EvaluatePolynomial(z, zTerms, 10);//다항식 값 계산 함수 z(10) 값 계산한다  // 1을 넣었을 때: 416.1
+		double result = EvaluatePolynomial(z, zTerms, 2);//다항식 값 계산 함수 z(10) 값 계산한다  // 1을 넣었을 때: 416.1
 		System.out.println("result = " + result );
 	}
 }
