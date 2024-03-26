@@ -20,7 +20,7 @@ class Polynomial3 implements Comparable<Polynomial3>{
     }
     
     @Override
-    public int compareTo(Polynomial3 d2) { //지수가 같으면 계수로 비교
+    public int compareTo(Polynomial3 d2) { 
     	return d2.exp - exp;
     }
 }
