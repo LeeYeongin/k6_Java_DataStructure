@@ -111,6 +111,7 @@ public class 과제3_HeapSort {
 					x[i] = value;
 					heap.Insert(value);
 				}
+				System.out.print("Input array: ");
 				showData(x);
 				heap.display();
 				break;

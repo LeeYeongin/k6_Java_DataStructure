@@ -56,7 +56,6 @@ public class 과제2_Merge정렬다항식 {
 		}
 	}
 
-	// --- 퀵 정렬(비재귀 버전)---//
 	static void MergeSort(Polynomial3[] a, int left, int right) {
 		int mid = (left+right)/2;
 		if (left == right) return;

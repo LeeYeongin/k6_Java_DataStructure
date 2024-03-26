@@ -66,7 +66,6 @@ public class 과제1_객체merge정렬 {
 		}
 	}
 
-	// --- 퀵 정렬(비재귀 버전)---//
 	static void MergeSort(PhyscData[] a, int left, int right) {
 		int mid = (left + right) / 2;
 		if (left == right)
