@@ -35,7 +35,7 @@ class Polynomial implements Comparable<Polynomial>{
 	}
 }
 
-public class 과제2_다항식merge연산 {
+public class tmp {
 
 	static void merge(Polynomial[] a, int lefta, int righta, int leftb, int rightb ) {
 		Polynomial tmp[] = new Polynomial[a.length]; 
