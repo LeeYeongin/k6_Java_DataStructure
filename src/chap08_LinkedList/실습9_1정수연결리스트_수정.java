@@ -23,9 +23,22 @@ class LinkedList12 {
 
 	public int Delete(int element) // delete the element
 	{
-		Node12 q, current = first;
-		q = current;
-
+		Node12 q = null, current = first;
+//		q = current;
+		
+		while(current != null) {
+			if(current.data == element) {
+				if(q == null) // 처음값이 삭제될 때
+					first = current.link;
+				else {
+					q.link = current.link;
+				}
+				return element;
+			} else {
+				q = current;
+				current = current.link;
+			}
+		}
 		return -1;// 삭제할 대상이 없다.
 	}
 
@@ -33,12 +46,44 @@ class LinkedList12 {
 		Node12 p = first;
 		
 		System.out.println("***리스트 출력***");
+		
+		while(p != null) {
+			System.out.print(p.data + " > ");
+			p = p.link;
+		}
+		System.out.println();
 
 	}
 
 	public void Add(int element) // 임의 값을 삽입할 때 리스트가 오름차순으로 정렬이 되도록 한다
 	{
 		Node12 newNode = new Node12(element);
+		Node12 p = first, q = null;
+		
+		if(p == null) {
+			first = newNode;
+			return;
+		}
+		
+		while(p != null) {
+			if(element > p.data) {
+				q = p;
+				p = p.link;
+			} else {
+				if(q == null) { // 맨 앞에 연결할때
+					newNode.link = p;
+					first = newNode;
+					return;
+				}else {
+					q.link = newNode;
+					newNode.link = p;
+					return;
+				}
+			}
+		}
+		
+		// 맨 마지막에 연결
+		q.link = newNode;
 
 	}
 
