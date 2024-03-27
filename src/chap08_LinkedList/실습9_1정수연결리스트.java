@@ -27,20 +27,15 @@ class LinkedList1 {
 		Node1 q = null, p = first;
 		
 		while(p != null) {
-			if(p.data < element) {
-				q = p;
-				p = p.link;
-			} else {
 				if(p.data == element) {
 					if(q == null) // 처음값이 삭제될 때
 						first = p.link;
-					else {
+					else
 						q.link = p.link;
-					}
 					return true;
 				}
-				break;
-			}
+				q = p;
+				p = p.link;
 		}
 		return false;// 삭제할 대상이 없다.
 	}
