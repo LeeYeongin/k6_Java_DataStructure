@@ -139,8 +139,15 @@ class LinkedList2 {
 	
 	public boolean Search(SimpleObject5 element, Comparator<SimpleObject5> cc) { 
 		// 전체 리스트를 올림차순 순서대로 출력한다.
-		Node2 q, current = first;
-		q = current;
+		Node2 q = first;
+		
+		while(q != null) {
+			if(cc.compare(q.data, element) == 0) {
+				return true;
+			}
+			
+			q = q.link;
+		}
 
 		return false;
 	}

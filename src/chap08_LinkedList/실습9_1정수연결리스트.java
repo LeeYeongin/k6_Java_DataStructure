@@ -97,12 +97,16 @@ class LinkedList1 {
 		
 		return false;
 	}
+
+	public void Merge(LinkedList1 l) {
+		
+	}
 }
 
 public class 실습9_1정수연결리스트 {
 	// enum: 숫자화 한다(enable numbering)
 	enum Menu {
-		Add("삽입"), Delete("삭제"), Show("인쇄"), Search("검색"), Exit("종료");
+		Add("삽입"), Delete("삭제"), Show("인쇄"), Search("검색"), Merge("병합"), Exit("종료");
 
 		private final String message; // 표시할 문자열
 
@@ -173,14 +177,14 @@ public class 실습9_1정수연결리스트 {
 				else
 					System.out.println("검색 값 = " + n + " 데이터가 존재합니다.");
 				break;
-//			case Merge://리스트 l과 l2를 합병하여 올림차순 정렬이 되게 구현한다 
-//				LinkedList1 l2 = new LinkedList1();
-//				for (int i =0; i < count; i++) {
-//					data = rand.nextInt(20);
-//					l2.Add(data);
-//				}
-//				l.Merge(l2);//merge 실행후 show로 결과 확인 - 새로운 노드를 만들지 않고 합병 - 난이도 상
-//				break;
+			case Merge://리스트 l과 l2를 합병하여 올림차순 정렬이 되게 구현한다 
+				LinkedList1 l2 = new LinkedList1();
+				for (int i =0; i < count; i++) {
+					data = rand.nextInt(20);
+					l2.Add(data);
+				}
+				l.Merge(l2);//merge 실행후 show로 결과 확인 - 새로운 노드를 만들지 않고 합병 - 난이도 상
+				break;
 			case Exit: // 꼬리 노드 삭제
 				break;
 			}
