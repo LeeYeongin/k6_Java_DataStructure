@@ -11,7 +11,7 @@ class SimpleObject5 {
 	static final int NO = 1; // 번호를 읽어 들일까요?
 	static final int NAME = 2; // 이름을 읽어 들일까요?
 
-	private String no; // 회원번호
+	private int no; // 회원번호
 	private String name; // 이름
 	String expire;//  유효기간 필드를 추가
 
@@ -22,7 +22,7 @@ class SimpleObject5 {
 	
 	// 생성자
 	public SimpleObject5() {
-		no = null;name = null;
+		no = -1; name = null;
 	}
 	
 	// --- 데이터를 읽어 들임 ---//
@@ -32,7 +32,7 @@ class SimpleObject5 {
 
 		if ((sw & NO) == NO) { //& 는 bit 연산자임 sw가 3(011)이면 &는 비트 연산이므로 결과는 3(011) & 1(001) = 1(001)
 			System.out.print("번호: ");
-			no = sc.next();
+			no = sc.nextInt();
 		}
 		if ((sw & NAME) == NAME) {//sw가 3이고 NAME과 비트 & 연산하면 결과는 2 3(011) & 2(010) = 2(010)
 			System.out.print("이름: ");
@@ -45,7 +45,8 @@ class SimpleObject5 {
 
 	private static class NoOrderComparator implements Comparator<SimpleObject5> {
 		public int compare(SimpleObject5 d1, SimpleObject5 d2) {
-			return (d1.no.compareTo(d2.no) > 0) ? 1 : (d1.no.compareTo(d2.no)<0) ? -1 : 0;
+//			return (d1.no.compareTo(d2.no) > 0) ? 1 : (d1.no.compareTo(d2.no)<0) ? -1 : 0;
+			return d1.no - d2.no;
 		}
 	}
 
