@@ -95,7 +95,6 @@ class DoubledLinkedList2 {
 	// --- 생성자(constructor) ---//
 	public DoubledLinkedList2() {
 		first = new Node4(); // dummy(first) 노드를 생성
-
 	}
 
 	// --- 리스트가 비어있는가? ---//
@@ -106,28 +105,85 @@ class DoubledLinkedList2 {
 	// --- 노드를 검색 ---//
 	public boolean search(SimpleObject2 obj, Comparator<? super SimpleObject2> c) {
 		Node4 ptr = first.rlink; // 현재 스캔 중인 노드
-		return true;
+		
+		while(ptr != first) {
+			if(c.compare(ptr.data, obj) < 0) {
+				ptr = ptr.rlink;
+			} else {
+				if(c.compare(ptr.data, obj) == 0) {
+					return true;
+				}
+				break;
+			}
+		}
+		
+		return false;
 
 	}
 
 	// --- 전체 노드 표시 ---//
 	public void show() {
 		Node4 ptr = first.rlink; // 더미 노드의 뒤쪽 노드
+		Node4 ptr2 = first.llink; // 더미 노드의 뒤쪽 노드
+		
+		System.out.println("rlink방향");
+		while(ptr != first) {
+			System.out.print(ptr.data + " > ");
+			ptr = ptr.rlink;
+		}
+		System.out.println();
+		
+		// llink가 제대로 연결됐는지 확인하는 출력
+//		System.out.println("llink방향");
+//		while(ptr2 != first) {
+//			System.out.print(ptr2.data + " > ");
+//			ptr2 = ptr2.llink;
+//		}
+//		System.out.println();
 
 	}
 
 	// --- 올림차순으로 정렬이 되도록 insert ---//
 	public void add(SimpleObject2 obj, Comparator<? super SimpleObject2> c) {
 		Node4 temp = new Node4(obj);
-		Node4 ptr = first;
-
-
+		Node4 ptr = first.rlink;
+		
+		while(ptr != first) {
+			if(c.compare(ptr.data, temp.data) < 0) {
+				ptr = ptr.rlink;
+			}else {
+				ptr.llink.rlink = temp;
+				temp.llink = ptr.llink;
+				temp.rlink = ptr;
+				ptr.llink = temp;
+				return;
+			}
+		}
+		
+		// 마지막에 들어가는 경우
+		ptr.llink.rlink = temp;
+		temp.llink = ptr.llink;
+		temp.rlink = ptr;
+		ptr.llink = temp;
 	}
 
 	// --- list에 삭제할 데이터가 있으면 해당 노드를 삭제 ---//
 	public void delete(SimpleObject2 obj, Comparator<? super SimpleObject2> c) {
-	
+		Node4 ptr = first.rlink;
+		
+		while(ptr != first) {
+			if(c.compare(ptr.data, obj) < 0) {
+				ptr = ptr.rlink;
+			} else {
+				if(c.compare(ptr.data, obj) == 0) {
+					ptr.llink.rlink = ptr.rlink;
+					ptr.rlink.llink = ptr.llink;
+				}
+				break;
+			}
+		}
 	}
+	
 	public DoubledLinkedList2 merge(DoubledLinkedList2 lst2) {
 		//l3 = l1.merge(l2); 실행하도록 리턴 값이 리스트임 
 		//l.add(객체)를 사용하여 구현
