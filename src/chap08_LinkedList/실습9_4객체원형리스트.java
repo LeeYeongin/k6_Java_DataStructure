@@ -89,22 +89,53 @@ class CircularList {
 	 */
 	public int Delete(SimpleObject3 element, Comparator<SimpleObject3> cc) // delete the element
 	{
-		Node3 q, current = first.link;
-		q = current;
+		Node3 q = first, p = first.link;
+		
+		while(p != first) {
+			if(cc.compare(p.data, element) < 0) {
+				q = p;
+				p = p.link;
+			} else {
+				if(cc.compare(p.data, element) == 0) {
+					q.link = p.link;
+					return 1;
+				}
+				break;
+			}
+		}
 
 		return -1;// 삭제할 대상이 없다.
 	}
 
 	public void Show() { // 전체 리스트를 순서대로 출력한다.
 		Node3 p = first.link;
-		SimpleObject3 so;
+		
+		while(p != first) {
+			System.out.print(p.data + " > ");
+			p = p.link;
+		}
+		System.out.println();
 
 	}
 
 	public void Add(SimpleObject3 element, Comparator<SimpleObject3> noOrder) // 임의 값을 삽입할 때 리스트가 오름차순으로 정렬이 되도록 한다
 	{
 		Node3 newNode = new Node3(element);
-	
+		Node3 p = first.link, q = first;
+		
+		while(p != first) {
+			if(noOrder.compare(p.data, element) < 0) {
+				q = p;
+				p = p.link;
+			} else {
+				q.link = newNode;
+				newNode.link = p;
+				return;
+			}
+		}
+		
+		q.link = newNode;
+		newNode.link = first;
 	}
 
 	public boolean Search(SimpleObject3 element, Comparator<SimpleObject3> cc) { // 전체 리스트를 순서대로 출력한다.
@@ -112,6 +143,7 @@ class CircularList {
 
 		return false;
 	}
+	
 	void Merge(CircularList b) {
 		/*
 		 * 연결리스트 a,b에 대하여 a = a + b
@@ -179,7 +211,10 @@ public class 실습9_4객체원형리스트 {
 				data = new SimpleObject3();
 				data.scanData("삭제", SimpleObject3.NO);
 				int num = l.Delete(data, SimpleObject3.NO_ORDER);
-				System.out.println("삭제된 데이터 성공은 " + num);
+				if(num < 0)
+					System.out.println("삭제된 데이터 성공은 " + num);
+				else
+					System.out.println(num + "데이터 삭제에 성공했습니다.");
 				break;
 			case Show: 
 				l.Show();
@@ -197,7 +232,7 @@ public class 실습9_4객체원형리스트 {
 				for (int i = 0; i < count; i++) {//3개의 객체를 연속으로 입력받아 l2 객체를 만든다 
 					data = new SimpleObject3();
 					data.scanData("병합", 3);
-					l2.Add(data, SimpleObject5.NO_ORDER );				
+					l2.Add(data, SimpleObject3.NO_ORDER );				
 				}
 				l.Merge(l2);
 			case Exit: // 꼬리 노드 삭제
