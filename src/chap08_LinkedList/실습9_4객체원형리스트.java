@@ -139,7 +139,14 @@ class CircularList {
 	}
 
 	public boolean Search(SimpleObject3 element, Comparator<SimpleObject3> cc) { // 전체 리스트를 순서대로 출력한다.
-		Node3 q, current = first.link;
+		Node3 p = first.link;
+		
+		while(p != first) {
+			if(cc.compare(p.data, element) == 0) {
+				return true;
+			}
+			p = p.link;
+		}
 
 		return false;
 	}
@@ -224,9 +231,9 @@ public class 실습9_4객체원형리스트 {
 				data.scanData("탐색", SimpleObject3.NO);
 				boolean result = l.Search(data, SimpleObject3.NO_ORDER);
 				if (result)
-					System.out.println("검색 성공 = " + result);
+					System.out.println("해당 데이터를 찾았습니다.");
 				else
-					System.out.println("검색 실패 = " + result);
+					System.out.println("해당 데이터를 찾을 수 없습니다.");
 				break;
 			case Merge:
 				for (int i = 0; i < count; i++) {//3개의 객체를 연속으로 입력받아 l2 객체를 만든다 
