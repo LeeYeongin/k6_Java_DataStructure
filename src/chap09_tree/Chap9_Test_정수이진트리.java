@@ -30,6 +30,7 @@ class ObjectStack5{
 	//--- 실행시 예외: 스택이 가득 참 ---//
 	public class OverflowGenericStackException extends RuntimeException {
 		public OverflowGenericStackException() {
+			super();
 		}
 	}
 
@@ -118,6 +119,7 @@ class ObjectStack5{
 		}
 	}
 }
+
 //정수를 저정하는 이진트리 만들기 실습
 class ObjectQueue5 {
     private TreeNode5[] que;//큐는 배열로 구현
