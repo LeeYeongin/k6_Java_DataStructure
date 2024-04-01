@@ -24,47 +24,46 @@ class SimpleChainHash {
 		table = new Node[size];
 	}
 
-	//--- 키값이 key인 요소를 검색(데이터를 반환) ---//
+	// --- 키값이 key인 요소를 검색(데이터를 반환) ---//
 	public int search(int key) {
 		int idx = key % size;
 		Node p = table[idx];
-		
-		while(p != null) {
-			if(p.key < key)
+
+		while (p != null) {
+			if (p.key < key)
 				p = p.next;
 			else {
-				if(p.key == key)
+				if (p.key == key)
 					return 1;
 				else
 					return -1;
 			}
 		}
-		
+
 		return -1;
 	}
 
 	// --- 키값이 key인 데이터를 data의 요소로 추가 ---//
 	public int add(int key) {
-		
+
 		int idx = key % size;
 		Node p = table[idx], q = null;
 		Node newNode = new Node(key);
-		
-		if(table[idx] == null) {
+
+		if (table[idx] == null) {
 			table[idx] = newNode;
 			return 1;
-		}else {
-			while(p != null) {
-				if(p.key < key) {
+		} else {
+			while (p != null) {
+				if (p.key < key) {
 					q = p;
 					p = p.next;
-				}
-				else {
+				} else {
 					// 중복되는 값이 들어갈때
-					if(p.key == key)
+					if (p.key == key)
 						return 0;
-					else { 	// 중복되지 않는 값인 경우
-						if(q == null) { // 맨 처음에 넣는 경우
+					else { // 중복되지 않는 값인 경우
+						if (q == null) { // 맨 처음에 넣는 경우
 							newNode.next = p;
 							table[idx] = newNode;
 							return 1;
@@ -75,32 +74,34 @@ class SimpleChainHash {
 						}
 					}
 				}
-				
+
 			}
-			
+
 			// 맨 뒤에 넣는 경우
 			q.next = newNode;
 			return 1;
-		}				
+		}
 	}
 
 	// --- 키값이 key인 요소를 삭제 ---//
 	public int delete(int key) {
 		int idx = key % size;
 		Node p = table[idx], q = null;
-		
-		while(p!= null) {
-			if(p.key == key) {
-				if(q == null)
-					table[idx] = p.next;
-				else
-					q.next = p.next;
-				
-				return 1;
+
+		while (p != null) {
+			if (p.key < key) {
+				q = p;
+				p = p.next;
+			} else {
+				if (p.key == key) {
+					if (q == null) // 맨 앞에 삭제
+						table[idx] = p.next;
+					else // 중간 삭제
+						q.next = p.next;
+					return 1;
+				}
+				return 0;
 			}
-			
-			q = p;
-			p = p.next;
 		}
 		
 		return 0;
@@ -108,11 +109,11 @@ class SimpleChainHash {
 
 	// --- 해시 테이블을 덤프(dump) ---//
 	public void dump() {
-		for(int i=0; i < table.length; i++) {
+		for (int i = 0; i < table.length; i++) {
 			System.out.printf("[%d] :", i);
-			if( table[i] != null) {
+			if (table[i] != null) {
 				Node p = table[i];
-				while(p != null) {
+				while (p != null) {
 					System.out.print(p.next != null ? p.key + " > " : p.key);
 					p = p.next;
 				}
@@ -162,7 +163,7 @@ public class 실습10_1정수체인해시 {
 		return Menu.MenuAt(key);
 	}
 
-	//체인법에 의한 해시 사용 예
+	// 체인법에 의한 해시 사용 예
 	public static void main(String[] args) {
 		Menu menu;
 		SimpleChainHash hash = new SimpleChainHash(11);
