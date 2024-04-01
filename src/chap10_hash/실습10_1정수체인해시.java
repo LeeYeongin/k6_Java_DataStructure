@@ -30,9 +30,14 @@ class SimpleChainHash {
 		Node p = table[idx];
 		
 		while(p != null) {
-			if(p.key == key)
-				return 1;
-			p = p.next;
+			if(p.key < key)
+				p = p.next;
+			else {
+				if(p.key == key)
+					return 1;
+				else
+					return -1;
+			}
 		}
 		
 		return -1;
@@ -42,27 +47,41 @@ class SimpleChainHash {
 	public int add(int key) {
 		
 		int idx = key % size;
-		Node p = table[idx];
+		Node p = table[idx], q = null;
 		Node newNode = new Node(key);
 		
 		if(table[idx] == null) {
 			table[idx] = newNode;
+			return 1;
 		}else {
 			while(p != null) {
-				// 중복되는 값이 들어갈때
-				if(p.key == key)
-					return 0;
+				if(p.key < key) {
+					q = p;
+					p = p.next;
+				}
+				else {
+					// 중복되는 값이 들어갈때
+					if(p.key == key)
+						return 0;
+					else { 	// 중복되지 않는 값인 경우
+						if(q == null) { // 맨 처음에 넣는 경우
+							newNode.next = p;
+							table[idx] = newNode;
+							return 1;
+						} else { // 중간에 넣는 경우
+							q.next = newNode;
+							newNode.next = p;
+							return 1;
+						}
+					}
+				}
 				
-				p = p.next;
 			}
 			
-			// 중복되지 않는 값인 경우
-			p = table[idx];
-			newNode.next = p;
-			table[idx] = newNode;			
-		}		
-		
-		return 1;
+			// 맨 뒤에 넣는 경우
+			q.next = newNode;
+			return 1;
+		}				
 	}
 
 	// --- 키값이 key인 요소를 삭제 ---//
