@@ -1,6 +1,7 @@
 package chap09_tree;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -15,27 +16,38 @@ class TreeNode5 {
 	public TreeNode5() {
 		LeftChild = RightChild = null;
 	}
+
+	public TreeNode5(int x) {
+		data = x;
+		LeftChild = RightChild = null;
+	}
+
+	public String toString() {
+		return "(" + data + ") ";
+	}
+
 }
 
-class ObjectStack5{
-	//--- 실행시 예외: 스택이 비어있음 ---//
+class ObjectStack5 {
+	// --- 실행시 예외: 스택이 비어있음 ---//
 	// generic class는 Throwable을 상속받을 수 없다 - 지원하지 않는다
 	public class EmptyGenericStackException extends Exception {
 		private static final long serialVersionUID = 1L;
+
 		public EmptyGenericStackException() {
 			super();
 		}
 	}
 
-	//--- 실행시 예외: 스택이 가득 참 ---//
+	// --- 실행시 예외: 스택이 가득 참 ---//
 	public class OverflowGenericStackException extends RuntimeException {
 		public OverflowGenericStackException() {
 			super();
 		}
 	}
 
-    private List<TreeNode5> data;  // list를 사용: 배열은 크기를 2배로 늘리는 작업 필요 
-	//private List<T> data;
+	private List<TreeNode5> data; // list를 사용: 배열은 크기를 2배로 늘리는 작업 필요
+	// private List<T> data;
 	private int capacity; // 스택의 크기
 	private int top; // 스택 포인터
 
@@ -45,7 +57,7 @@ class ObjectStack5{
 		this.capacity = capacity;
 		// this.data = new T[capacity]; // 스택 본체용 배열을 생성
 		try {
-		data = new ArrayList<>(capacity);
+			data = new ArrayList<>(capacity);
 		} catch (OutOfMemoryError e) {
 			capacity = 0;
 		}
@@ -53,7 +65,7 @@ class ObjectStack5{
 
 //--- 스택에 x를 푸시 ---//
 	public boolean push(TreeNode5 x) throws OverflowGenericStackException {
-		System.out.println("top = " + top +"capacity = " + capacity);
+		System.out.println("top = " + top + " capacity = " + capacity);
 		if (top >= capacity)
 			throw new OverflowGenericStackException();
 		top++;
@@ -62,14 +74,14 @@ class ObjectStack5{
 	}
 
 //--- 스택에서 데이터를 팝(정상에 있는 데이터를 꺼냄) ---//
-	public TreeNode5 pop() throws EmptyGenericStackException  {
+	public TreeNode5 pop() throws EmptyGenericStackException {
 		if (top < 0)
 			throw new EmptyGenericStackException();
 		return data.remove(--top);
 	}
 
 //--- 스택에서 데이터를 피크(peek, 정상에 있는 데이터를 들여다봄) ---//
-	public TreeNode5 peek() throws EmptyGenericStackException  {
+	public TreeNode5 peek() throws EmptyGenericStackException {
 		if (top <= 0)
 			throw new EmptyGenericStackException();
 		return data.get(top - 1);
@@ -114,7 +126,7 @@ class ObjectStack5{
 			System.out.println("stack이 비어있습니다.");
 		else {
 			for (int i = 0; i < top; i++)
-				System.out.print(data.get(i)+ " ");
+				System.out.print(data.get(i) + " ");
 			System.out.println();
 		}
 	}
@@ -122,8 +134,8 @@ class ObjectStack5{
 
 //정수를 저정하는 이진트리 만들기 실습
 class ObjectQueue5 {
-    private TreeNode5[] que;//큐는 배열로 구현
-	//private List<Integer> que; // 수정본
+	private TreeNode5[] que;// 큐는 배열로 구현
+	// private List<Integer> que; // 수정본
 	private int capacity; // 큐의 크기
 	private int front; // 맨 처음 요소 커서
 	private int rear; // 맨 끝 요소 커서
@@ -144,21 +156,21 @@ class ObjectQueue5 {
 	}
 
 //--- 생성자(constructor) ---//
-public ObjectQueue5(int maxlen) {
-   num = front = rear = 0;
-   capacity = maxlen;
-   try {
-	   que = new TreeNode5[maxlen];
-   } catch (OutOfMemoryError e) {        // 생성할 수 없음
-       capacity = 0;
-   }
-}
+	public ObjectQueue5(int maxlen) {
+		num = front = rear = 0;
+		capacity = maxlen;
+		try {
+			que = new TreeNode5[maxlen];
+		} catch (OutOfMemoryError e) { // 생성할 수 없음
+			capacity = 0;
+		}
+	}
 
 //--- 큐에 데이터를 인큐 ---//
 	public int enque(TreeNode5 x) throws OverflowQueueException {
 		if (num >= capacity)
 			throw new OverflowQueueException("queue full"); // 큐가 가득 찼음
-		que[rear++] = x; 
+		que[rear++] = x;
 		num++;
 
 		return 1;
@@ -240,12 +252,38 @@ class Tree5 {
 		if (current.RightChild != null)
 			while (temp.LeftChild != null)
 				temp = temp.LeftChild;
-		System.out.println("inordersucc:: temp.data = "+temp.data);
+		System.out.println("inordersucc:: temp.data = " + temp.data);
 		return temp;
+	}
+	
+	TreeNode5 findParent(TreeNode5 current) {
+		//주어진 노드의 parent node를 찾는 알고리즘
+		TreeNode5 p = root, temp = null;
+		while (p != null) {
+			if (p.data == current.data) {
+				return temp;
+			} else if (p.data < current.data) {
+				temp = p;
+				p = p.RightChild;
+			} else {
+				temp = p;
+				p = p.LeftChild;
+			}
+		}
+		return null;
 	}
 
 	boolean isLeafNode(TreeNode5 current) {
 		if (current.LeftChild == null && current.RightChild == null)
+			return true;
+		else
+			return false;
+	}
+	
+	boolean isOneChild(TreeNode5 current) {
+		if (current.LeftChild == null && current.RightChild != null)
+			return true;
+		else if(current.LeftChild != null && current.RightChild == null)
 			return true;
 		else
 			return false;
@@ -287,8 +325,8 @@ class Tree5 {
 		}
 	}
 
-	void NonrecInorder()//void Tree5::inorder(TreeNode5 *CurrentNode)와 비교
-	//stack을 사용한 inorder 출력
+	void NonrecInorder()// void Tree5::inorder(TreeNode5 *CurrentNode)와 비교
+	// stack을 사용한 inorder 출력
 	{
 		ObjectStack5 s = new ObjectStack5(20);
 		TreeNode5 CurrentNode = root;
@@ -306,54 +344,135 @@ class Tree5 {
 				}
 				System.out.println(" " + CurrentNode.data);
 				CurrentNode = CurrentNode.RightChild;
-			}
-			else break;  
+			} else
+				break;
 		}
 	}
-	void levelOrder() //level 별로 출력한다. level이 증가하면 다음줄에 출력한다 
-	//난이도: 최상급 구현 (queue를 사용)
+
+	void levelOrder() // level 별로 출력한다. level이 증가하면 다음줄에 출력한다
+	// 난이도: 최상급 구현 (queue를 사용)
 	{
 		ObjectQueue5 q = new ObjectQueue5(20);
 		Queue<Integer> que = new LinkedList<>();
-		int oldLevel = 0,  newLevel=0;
-		que.add(oldLevel+1);
+		int oldLevel = 0, newLevel = 0;
+		que.add(oldLevel + 1);
 		TreeNode5 CurrentNode = root;
 		newLevel = que.remove();
-		
+
 	}
 
 	boolean insert(int x) {// binary search tree를 만드는 입력 : left subtree < 노드 x < right subtree
-		//inorder traversal시에 정렬된 결과가 나와야 한다
+		// inorder traversal시에 정렬된 결과가 나와야 한다
 		TreeNode5 p = root;
 		TreeNode5 q = null;
-		
-		return true;
+		TreeNode5 newNode = new TreeNode5(x);
+
+		if (p == null) {
+			root = newNode;
+			return true;
+		} else {
+			while (p != null) {
+				q = p;
+				if (p.data == x) {
+					return false;
+				} else if (p.data > x) {
+					p = p.LeftChild;
+				} else {
+					p = p.RightChild;
+				}
+			}
+
+			p = newNode;
+
+			if (p.data > q.data)
+				q.RightChild = p;
+			else
+				q.LeftChild = p;
+
+			return true;
+		}
 	}
 
-	boolean delete(int num) {//binary search tree에서 임의 값을 갖는 노드를 찾아 삭제한다.
-		//삭제 대상이 leaf node인 경우, non-leaf node로 구분하여 구현한다 
+	boolean delete(int num) {// binary search tree에서 임의 값을 갖는 노드를 찾아 삭제한다.
+		// 삭제 대상이 leaf node인 경우, non-leaf node로 구분하여 구현한다
 		TreeNode5 p = root, q = null, parent = null;
 		int branchMode = 0; // 1은 left, 2는 right
 		if (root == null)
 			return false;
 		
+		while(p != null) {
+			if(p.data > num) {
+				q = p;
+				p = p.LeftChild;
+			}
+			else if(p.data < num) {
+				q = p;
+				p = p.RightChild;
+			}
+			else {				
+				if (isLeafNode(p)) { // leaf node
+					if(p.data > q.data) {
+						q.RightChild = null;
+					}else {
+						q.LeftChild = null;
+					}
+					return true;
+				} else { // non-leaf node			
+					if(isOneChild(p)) { // one child
+						if(p.data > q.data) {
+							if(p.LeftChild != null)
+								q.RightChild = p.LeftChild;
+							else
+								q.RightChild = p.RightChild;
+						}else {
+							if(p.LeftChild != null)
+								q.LeftChild = p.LeftChild;
+							else
+								q.LeftChild = p.RightChild;
+						}
+						return true;
+					} else { // two child
+						TreeNode5 tmp = inorderSucc(p);
+						TreeNode5 ptmp = findParent(tmp);
+						if(isLeafNode(tmp)) {
+							ptmp.LeftChild = null;
+						}
+						else {
+							ptmp.LeftChild = tmp.RightChild;
+						}							
+						p.data = tmp.data;
+						
+						return true;
+					}
+				}
+			}
+		}
+
 		return false;
 
 	}
 
-	boolean search(int num) {//num 값을 binary search tree에서 검색
+	boolean search(int num) {// num 값을 binary search tree에서 검색
 		TreeNode5 p = root;
-		
-		return true;
+
+		while (p != null) {
+			if (p.data > num) {
+				p = p.LeftChild;
+			} else if (p.data < num) {
+				p = p.RightChild;
+			} else {
+				return true;
+			}
+		}
+		return false;
 
 	}
 }
 
 public class Chap9_Test_정수이진트리 {
 	enum Menu {
-		Add("삽입"), Delete("삭제"), Search("검색"), InorderPrint("정렬출력"), 
-		LevelorderPrint("레벨별출력"), StackInorderPrint("스택정렬출력"), 
-		PreorderPrint("prefix출력"), PostorderPrint("postfix출력"), Exit("종료");
+		Add("삽입"), Delete("삭제"), Search("검색"), InorderPrint("정렬출력"), LevelorderPrint("레벨별출력"),
+		StackInorderPrint("스택정렬출력"), PreorderPrint("prefix출력"), PostorderPrint("postfix출력"), Exit("종료");
 
 		private final String message; // 표시할 문자열
 
@@ -397,27 +516,29 @@ public class Chap9_Test_정수이진트리 {
 		boolean result;
 		do {
 			switch (menu = SelectMenu()) {
-			case Add: // 
+			case Add: //
 				int[] input = new int[count];
 				for (int ix = 0; ix < count; ix++) {
 					input[ix] = rand.nextInt(50);
 				}
-				for (int n: input)
+
+				for (int n : input)
 					System.out.print(n + " ");
+				System.out.println();
+
 				for (int i = 0; i < count; i++) {
 					if (!t.insert(input[i]))
-						System.out.println("Insert Duplicated data");
+						System.out.println(input[i] + " :Insert Duplicated data");
 				}
 				break;
 
-			case Delete: //임의 정수 삭제
+			case Delete: // 임의 정수 삭제
 				System.out.println("삭제할 데이터:: ");
 				num = stdIn.nextInt();
 				if (t.delete(num))
 					System.out.println("삭제 데이터 = " + num + " 성공");
 				else
 					System.out.println("삭제 실패");
-				;
 				break;
 
 			case Search: // 노드 검색
@@ -434,21 +555,21 @@ public class Chap9_Test_정수이진트리 {
 			case InorderPrint: // 전체 노드를 키값의 오름차순으로 표시
 				t.inorder();
 				System.out.println();
-				//t.NonrecInorder();
+				// t.NonrecInorder();
 				break;
-			case LevelorderPrint: // 
+			case LevelorderPrint: //
 				t.levelOrder();
 				System.out.println();
-				//t.NonrecInorder();
+				// t.NonrecInorder();
 				break;
 			case StackInorderPrint: // 전체 노드를 키값의 오름차순으로 표시
 				t.NonrecInorder();
 				break;
-			case PreorderPrint://prefix 출력
+			case PreorderPrint:// prefix 출력
 				t.preorder();
 				System.out.println();
 				break;
-			case PostorderPrint://postfix로 출력
+			case PostorderPrint:// postfix로 출력
 				t.postorder();
 				System.out.println();
 				break;
