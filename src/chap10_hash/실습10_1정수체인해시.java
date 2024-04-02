@@ -19,8 +19,8 @@ class SimpleChainHash {
 	private int size; // 해시 테이블의 크기
 	private Node[] table; // 해시 테이블
 
-	public SimpleChainHash(int i) {
-		size = i;
+	public SimpleChainHash(int size) {
+		this.size = size;
 		table = new Node[size];
 	}
 
