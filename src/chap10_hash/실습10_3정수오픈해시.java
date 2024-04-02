@@ -17,7 +17,6 @@ class OpenHash2 {
 	static class Bucket {
 		private int data; // 데이터
 		private Status stat; // 상태
-
 	}
 
 	private int size; // 해시 테이블의 크기
@@ -25,12 +24,14 @@ class OpenHash2 {
 
 //--- 생성자(constructor) ---//
 	public OpenHash2(int size) {
-
+		this.size = size;
+		table = new Bucket[size];
 	}
 
 //--- 해시값을 구함 ---//
 	public int hashValue(int key) {
-		return hashCode() % size;
+		return Integer.hashCode(key) % size;
+//		return key % size;
 	}
 
 //--- 재해시값을 구함 ---//
@@ -40,22 +41,26 @@ class OpenHash2 {
 
 //--- 키값 key를 갖는 버킷 검색 ---//
 	private Bucket searchNode(int key) {
-
+		
 	}
 
 //--- 키값이 key인 요소를 검색(데이터를 반환)---//
 	public int search(int key) {
-
+		
 	}
 
 //--- 키값이 key인 데이터를 data의 요소로 추가 ---//
 	public int add(int data) {
-
+		System.out.println(hashValue(data));
+//		int idx = 
+//		Bucket p = table[]
+//		if ()
+		return 0;
 	}
 
 //--- 키값이 key인 요소를 삭제 ---//
 	public int remove(int key) {
-
+		
 	}
 
 //--- 해시 테이블을 덤프(dump) ---//
@@ -117,17 +122,18 @@ public class 실습10_3정수오픈해시 {
 					input[ix] = (int) (d * 20);
 					System.out.print(" " + input[ix]);
 				}
+				System.out.println();
 				for (int i = 0; i < count; i++) {
 					int k = hash.add(input[i]);
-					switch (k) {
-					case 1:
-						System.out.printf("(%d) -> ", input[i]);
-						System.out.println("그 키값은 이미 등록되어 있습니다.");
-						break;
-					case 2:
-						System.out.println("해시 테이블이 가득 찼습니다.");
-						break;
-					}
+//					switch (k) {
+//					case 1:
+//						System.out.printf("(%d) -> ", input[i]);
+//						System.out.println("그 키값은 이미 등록되어 있습니다.");
+//						break;
+//					case 2:
+//						System.out.println("해시 테이블이 가득 찼습니다.");
+//						break;
+//					}
 				}
 				break;
 
