@@ -404,10 +404,12 @@ class Tree5 {
 			if(p.data > num) {
 				q = p;
 				p = p.LeftChild;
+				branchMode = 1;
 			}
 			else if(p.data < num) {
 				q = p;
 				p = p.RightChild;
+				branchMode = 2;
 			}
 			else {				
 				if (isLeafNode(p)) { // leaf node
@@ -433,12 +435,21 @@ class Tree5 {
 						return true;
 					} else { // two child
 						TreeNode5 tmp = inorderSucc(p);
+						System.out.println(tmp.data);
 						TreeNode5 ptmp = findParent(tmp);
+						System.out.println(ptmp.data);
 						if(isLeafNode(tmp)) {
-							ptmp.LeftChild = null;
+							if(ptmp == root)
+								ptmp.RightChild = null;
+							else
+								ptmp.LeftChild = null;
 						}
 						else {
-							ptmp.LeftChild = tmp.RightChild;
+							if(ptmp == root) {
+								ptmp.RightChild = tmp.RightChild;
+							}else {								
+								ptmp.LeftChild = tmp.RightChild;
+							}
 						}							
 						p.data = tmp.data;
 						

@@ -1,4 +1,4 @@
-package Chap9_Tree;
+package chap09_tree;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -316,6 +316,15 @@ class Tree4 {
 		}
 		return null;
 	}
+	
+	boolean isOneChild(TreeNode4 current) {
+		if (current.LeftChild == null && current.RightChild != null)
+			return true;
+		else if(current.LeftChild != null && current.RightChild == null)
+			return true;
+		else
+			return false;
+	}
 
 	boolean isLeafNode(TreeNode4 current) {
 		//주어진 노드가 leaf node인지 검사
@@ -366,6 +375,32 @@ class Tree4 {
 		// left subtree < x < right subtree
 		TreeNode4 p = root;
 		TreeNode4 q = null;
+		TreeNode4 newNode = new TreeNode4(obj);
+
+		if (p == null) {
+			root = newNode;
+			return true;
+		} else {
+			while (p != null) {
+				q = p;
+				if (c.compare(obj, p.data) == 0) {
+					return false;
+				} else if (c.compare(obj, p.data) < 0) {
+					p = p.LeftChild;
+				} else {
+					p = p.RightChild;
+				}
+			}
+
+			p = newNode;
+
+			if (c.compare(p.data, q.data) > 0)
+				q.RightChild = p;
+			else
+				q.LeftChild = p;
+
+			return true;
+		}
 
 	}
 
@@ -373,15 +408,78 @@ class Tree4 {
 		//주어진 객체 obj를 포함한 노드를 찾아 삭제하는 알고리즘
 		//난이도: 최상급 중에서 최상급
 		TreeNode4 p = root, q = null;
+		
+		if (root == null)
+			return false;
+		
+		while(p != null) {
+			if(c.compare(p.data, obj) > 0) {
+				q = p;
+				p = p.LeftChild;
+			}
+			else if(c.compare(p.data, obj) < 0) {
+				q = p;
+				p = p.RightChild;
+			}
+			else {				
+				if (isLeafNode(p)) { // leaf node
+					if(c.compare(p.data, q.data) > 0) {
+						q.RightChild = null;
+					}else {
+						q.LeftChild = null;
+					}
+					return true;
+				} else { // non-leaf node			
+					if(isOneChild(p)) { // one child
+						if(c.compare(p.data, q.data) > 0) {
+							if(p.LeftChild != null)
+								q.RightChild = p.LeftChild;
+							else
+								q.RightChild = p.RightChild;
+						}else {
+							if(p.LeftChild != null)
+								q.LeftChild = p.LeftChild;
+							else
+								q.LeftChild = p.RightChild;
+						}
+						return true;
+					} else { // two child
+						TreeNode4 tmp = inorderSucc(p);
+						TreeNode4 ptmp = findParent(tmp, c);
+						if(isLeafNode(tmp)) {
+							ptmp.LeftChild = null;
+						}
+						else {
+							ptmp.LeftChild = tmp.RightChild;
+						}							
+						p.data = tmp.data;
+						
+						return true;
+					}
+				}
+			}
+		}
 
-
+		return false;
 	}
 
 	boolean search(SimpleObject4 obj, Comparator<? super SimpleObject4> c) {
 		//주어진 객체 obj를 갖는 노드를 찾는 문제
 		TreeNode4 p = root;
+		
+		while (p != null) {
+			if (c.compare(p.data, obj) > 0) {
+				p = p.LeftChild;
+			} else if (c.compare(p.data, obj) < 0) {
+				p = p.RightChild;
+			} else {
+				return true;
+			}
+		}
+		return false;
 
 	}
+	
 	void levelOrder() 
 	//root 부터 level별로 출력 : root는 level 1, level 2는 다음줄에 => 같은 level이면 같은 줄에 출력하게 한다 
 	{
@@ -402,7 +500,7 @@ class Tree4 {
 			if (!s.isEmpty()) {
 				try {
 					CurrentNode = s.pop();
-				} catch (Chap9_Tree.ObjectStack4.EmptyGenericStackException e) {
+				} catch (chap09_tree.ObjectStack4.EmptyGenericStackException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
@@ -414,7 +512,7 @@ class Tree4 {
 	}
 }
 
-public class 객체이진트리 {
+public class Chap9_Test_객체이진트리 {
 	enum Menu {
 		Add("삽입"), Delete("삭제"), Search("검색"), InorderPrint("정렬출력"), 
 		LevelorderPrint("레벨별출력"), StackInorderPrint("스택정렬출력"), 
