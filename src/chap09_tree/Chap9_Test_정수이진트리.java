@@ -255,9 +255,9 @@ class Tree5 {
 		System.out.println("inordersucc:: temp.data = " + temp.data);
 		return temp;
 	}
-	
+
 	TreeNode5 findParent(TreeNode5 current) {
-		//주어진 노드의 parent node를 찾는 알고리즘
+		// 주어진 노드의 parent node를 찾는 알고리즘
 		TreeNode5 p = root, temp = null;
 		while (p != null) {
 			if (p.data == current.data) {
@@ -279,11 +279,11 @@ class Tree5 {
 		else
 			return false;
 	}
-	
+
 	boolean isOneChild(TreeNode5 current) {
 		if (current.LeftChild == null && current.RightChild != null)
 			return true;
-		else if(current.LeftChild != null && current.RightChild == null)
+		else if (current.LeftChild != null && current.RightChild == null)
 			return true;
 		else
 			return false;
@@ -359,6 +359,19 @@ class Tree5 {
 		TreeNode5 CurrentNode = root;
 		newLevel = que.remove();
 
+		while (true) {
+			System.out.print(CurrentNode.data + " ");
+
+			if (CurrentNode.LeftChild != null)
+				q.enque(CurrentNode.LeftChild);
+			if (CurrentNode.RightChild != null)
+				q.enque(CurrentNode.RightChild);
+
+			if (!q.isEmpty())
+				CurrentNode = q.deque();
+			else
+				break;
+		}
 	}
 
 	boolean insert(int x) {// binary search tree를 만드는 입력 : left subtree < 노드 x < right subtree
@@ -396,63 +409,65 @@ class Tree5 {
 	boolean delete(int num) {// binary search tree에서 임의 값을 갖는 노드를 찾아 삭제한다.
 		// 삭제 대상이 leaf node인 경우, non-leaf node로 구분하여 구현한다
 		TreeNode5 p = root, q = null, parent = null;
-		int branchMode = 0; // 1은 left, 2는 right
+//		int branchMode = 0; // 1은 left, 2는 right
 		if (root == null)
 			return false;
-		
-		while(p != null) {
-			if(p.data > num) {
+
+		while (p != null) {
+			if (p.data > num) {
 				q = p;
 				p = p.LeftChild;
-				branchMode = 1;
-			}
-			else if(p.data < num) {
+			} else if (p.data < num) {
 				q = p;
 				p = p.RightChild;
-				branchMode = 2;
-			}
-			else {				
+			} else {
 				if (isLeafNode(p)) { // leaf node
-					if(p.data > q.data) {
+					if (p.data > q.data) {
 						q.RightChild = null;
-					}else {
+					} else {
 						q.LeftChild = null;
 					}
 					return true;
-				} else { // non-leaf node			
-					if(isOneChild(p)) { // one child
-						if(p.data > q.data) {
-							if(p.LeftChild != null)
-								q.RightChild = p.LeftChild;
-							else
-								q.RightChild = p.RightChild;
-						}else {
-							if(p.LeftChild != null)
-								q.LeftChild = p.LeftChild;
-							else
-								q.LeftChild = p.RightChild;
+				} else { // non-leaf node
+					if (isOneChild(p)) { // one child
+						if (p == root) {
+							if (p.LeftChild != null) {
+								root = p.LeftChild;
+							} else {
+								root = p.RightChild;
+							}
+
+						} else {
+							if (p.data > q.data) {
+								if (p.LeftChild != null)
+									q.RightChild = p.LeftChild;
+								else
+									q.RightChild = p.RightChild;
+							} else {
+								if (p.LeftChild != null)
+									q.LeftChild = p.LeftChild;
+								else
+									q.LeftChild = p.RightChild;
+							}
 						}
 						return true;
 					} else { // two child
 						TreeNode5 tmp = inorderSucc(p);
-						System.out.println(tmp.data);
 						TreeNode5 ptmp = findParent(tmp);
-						System.out.println(ptmp.data);
-						if(isLeafNode(tmp)) {
-							if(ptmp == root)
+						if (isLeafNode(tmp)) {
+							if (ptmp == p)
 								ptmp.RightChild = null;
 							else
 								ptmp.LeftChild = null;
-						}
-						else {
-							if(ptmp == root) {
+						} else {
+							if (ptmp == p) {
 								ptmp.RightChild = tmp.RightChild;
-							}else {								
+							} else {
 								ptmp.LeftChild = tmp.RightChild;
 							}
-						}							
+						}
 						p.data = tmp.data;
-						
+
 						return true;
 					}
 				}
@@ -522,7 +537,7 @@ public class Chap9_Test_정수이진트리 {
 		Scanner stdIn = new Scanner(System.in);
 		Tree5 t = new Tree5();
 		Menu menu; // 메뉴
-		int count = 20;
+		int count = 10;
 		int num;
 		boolean result;
 		do {
