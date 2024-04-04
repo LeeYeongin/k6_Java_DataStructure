@@ -2,7 +2,9 @@ package chap09_tree;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 import java.util.Scanner;
 
 class SimpleObject4 {
@@ -431,29 +433,44 @@ class Tree4 {
 					return true;
 				} else { // non-leaf node			
 					if(isOneChild(p)) { // one child
-						if(c.compare(p.data, q.data) > 0) {
-							if(p.LeftChild != null)
-								q.RightChild = p.LeftChild;
-							else
-								q.RightChild = p.RightChild;
-						}else {
-							if(p.LeftChild != null)
-								q.LeftChild = p.LeftChild;
-							else
-								q.LeftChild = p.RightChild;
+						if (p == root) {
+							if (p.LeftChild != null) {
+								root = p.LeftChild;
+							} else {
+								root = p.RightChild;
+							}
+
+						} else {
+							if (c.compare(p.data, q.data)>0) {
+								if (p.LeftChild != null)
+									q.RightChild = p.LeftChild;
+								else
+									q.RightChild = p.RightChild;
+							} else {
+								if (p.LeftChild != null)
+									q.LeftChild = p.LeftChild;
+								else
+									q.LeftChild = p.RightChild;
+							}
 						}
 						return true;
 					} else { // two child
 						TreeNode4 tmp = inorderSucc(p);
 						TreeNode4 ptmp = findParent(tmp, c);
-						if(isLeafNode(tmp)) {
-							ptmp.LeftChild = null;
+						if (isLeafNode(tmp)) {
+							if (ptmp == p)
+								ptmp.RightChild = null;
+							else
+								ptmp.LeftChild = null;
+						} else {
+							if (ptmp == p) {
+								ptmp.RightChild = tmp.RightChild;
+							} else {
+								ptmp.LeftChild = tmp.RightChild;
+							}
 						}
-						else {
-							ptmp.LeftChild = tmp.RightChild;
-						}							
 						p.data = tmp.data;
-						
+
 						return true;
 					}
 				}
@@ -484,8 +501,26 @@ class Tree4 {
 	//root 부터 level별로 출력 : root는 level 1, level 2는 다음줄에 => 같은 level이면 같은 줄에 출력하게 한다 
 	{
 		ObjectQueue4 q = new ObjectQueue4(20);
-		TreeNode4 CurrentNode = root;
+		Queue<Integer> que = new LinkedList<>();
+		int oldLevel = 0, newLevel = 0;
+		que.add(oldLevel + 1);
+		
+		TreeNode4 CurrentNode = root; 
+		newLevel = que.remove();
 
+		while (true) {
+			System.out.print(CurrentNode.data + " ");
+
+			if (CurrentNode.LeftChild != null)
+				q.enque(CurrentNode.LeftChild);
+			if (CurrentNode.RightChild != null)
+				q.enque(CurrentNode.RightChild);
+
+			if (!q.isEmpty())
+				CurrentNode = q.deque();
+			else
+				break;
+		}
 	}
 	void NonrecInorder()//void Tree::inorder(TreeNode4 *CurrentNode)와 비교
 	//stack을 이용하여 inorder traversal하는 알고리즘 구현
