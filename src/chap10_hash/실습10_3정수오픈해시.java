@@ -17,6 +17,16 @@ class OpenHash2 {
 	static class Bucket {
 		private int data; // 데이터
 		private Status stat; // 상태
+		
+		Bucket(){
+			data = 0;
+			stat = Status.EMPTY;
+		}
+		
+		public void set(int data, Status s) {
+			this.data = data;
+			this.stat = s;
+		}
 	}
 
 	private int size; // 해시 테이블의 크기
@@ -26,12 +36,15 @@ class OpenHash2 {
 	public OpenHash2(int size) {
 		this.size = size;
 		table = new Bucket[size];
+		
+		for(int i=0; i<size; i++) {
+			table[i] = new Bucket();
+		}
 	}
 
 //--- 해시값을 구함 ---//
 	public int hashValue(int key) {
 		return Integer.hashCode(key) % size;
-//		return key % size;
 	}
 
 //--- 재해시값을 구함 ---//
@@ -41,31 +54,67 @@ class OpenHash2 {
 
 //--- 키값 key를 갖는 버킷 검색 ---//
 	private Bucket searchNode(int key) {
+		int hash = hashValue(key);
+		Bucket p = table[hash];
 		
+		for(int i=0; p.stat != Status.EMPTY && i < size; i++) {
+			if(p.stat == Status.OCCUPIED && p.data == key)
+				return p;
+			hash = rehashValue(hash);
+			p = table[hash];
+		}
+		return null;
 	}
 
 //--- 키값이 key인 요소를 검색(데이터를 반환)---//
 	public int search(int key) {
-		
+		Bucket p = searchNode(key);
+		if(p!=null)
+			return p.data;
+		else
+			return 0;
 	}
 
 //--- 키값이 key인 데이터를 data의 요소로 추가 ---//
 	public int add(int data) {
-		System.out.println(hashValue(data));
-//		int idx = 
-//		Bucket p = table[]
-//		if ()
-		return 0;
+		int hash = hashValue(data);
+//		System.out.println(data + ": " + hash);
+		Bucket p = table[hash];
+		
+		if(searchNode(data) != null)
+			return 1;
+		
+		for(int i=0; i<size; i++) {
+			if(p.stat == Status.EMPTY || p.stat == Status.DELETED) {
+				p.set(data, Status.OCCUPIED);
+				return 0;
+			}
+			hash = rehashValue(hash);
+			p = table[hash];
+		}
+		
+		return 2;
 	}
 
 //--- 키값이 key인 요소를 삭제 ---//
 	public int remove(int key) {
+		Bucket p = searchNode(key);
+		if (p == null)
+			return 0;
+		
+		p.stat = Status.DELETED;
+		return 1;
 		
 	}
 
 //--- 해시 테이블을 덤프(dump) ---//
 	public void dump() {
-
+		for(int i=0; i<size; i++) {
+			System.out.print("[" + i + "]: " );
+			if(table[i].stat == Status.OCCUPIED && table[i].data != 0)
+				System.out.print(table[i].data);
+			System.out.println();
+		}
 	}
 }
 
@@ -110,7 +159,7 @@ public class 실습10_3정수오픈해시 {
 	public static void main(String[] args) {
 		Menu menu; // 메뉴
 		int select = 0, result = 0, val = 0;
-		final int count = 8;
+		final int count = 10;
 		Scanner stdIn = new Scanner(System.in);
 		OpenHash2 hash = new OpenHash2(13);
 		do {
@@ -125,15 +174,15 @@ public class 실습10_3정수오픈해시 {
 				System.out.println();
 				for (int i = 0; i < count; i++) {
 					int k = hash.add(input[i]);
-//					switch (k) {
-//					case 1:
-//						System.out.printf("(%d) -> ", input[i]);
-//						System.out.println("그 키값은 이미 등록되어 있습니다.");
-//						break;
-//					case 2:
-//						System.out.println("해시 테이블이 가득 찼습니다.");
-//						break;
-//					}
+					switch (k) {
+					case 1:
+						System.out.printf("(%d) -> ", input[i]);
+						System.out.println("그 키값은 이미 등록되어 있습니다.");
+						break;
+					case 2:
+						System.out.println("해시 테이블이 가득 찼습니다.");
+						break;
+					}
 				}
 				break;
 
@@ -142,9 +191,9 @@ public class 실습10_3정수오픈해시 {
 				val = stdIn.nextInt();
 				result = hash.remove(val);
 				if (result == 0)
-					System.out.println(" 검색 데이터가 존재한다");
+					System.out.println("데이터가 존재하지 않아 삭제할 수 없습니다.");
 				else
-					System.out.println(" 검색 데이터가 없음");
+					System.out.println("데이터 삭제에 성공했습니다.");
 				System.out.println();
 				break;
 
@@ -153,9 +202,9 @@ public class 실습10_3정수오픈해시 {
 				val = stdIn.nextInt();
 				result = hash.search(val);
 				if (result != 0)
-					System.out.println(" 검색 데이터가 존재한다");
+					System.out.println(result + "가 존재합니다.");
 				else
-					System.out.println(" 검색 데이터가 없음");
+					System.out.println("검색 데이터가 없습니다.");
 				System.out.println();
 				break;
 
