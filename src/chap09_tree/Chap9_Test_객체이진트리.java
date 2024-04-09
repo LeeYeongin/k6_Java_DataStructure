@@ -497,29 +497,58 @@ class Tree4 {
 
 	}
 	
-	void levelOrder() 
+	int getLevel(SimpleObject4 obj, Comparator<? super SimpleObject4> c) {
+		// 주어진 객체 obj의 Level을 찾는 메서드, root로 부터 하위 단계로 이동할때마다 count + 1
+		TreeNode4 p = root;
+		int cnt = 1;
+		
+		while(p != null) {
+			if(c.compare(obj, p.data) == 0)
+				return cnt;
+			
+			if(c.compare(obj, p.data) < 0)
+				p = p.LeftChild;
+			else
+				p = p.RightChild;
+			cnt++;
+		}
+		return -1;
+	}
+	
+	void levelOrder(Comparator<? super SimpleObject4> c) 
 	//root 부터 level별로 출력 : root는 level 1, level 2는 다음줄에 => 같은 level이면 같은 줄에 출력하게 한다 
 	{
+		// 다른 사람 코드 참고하여 level별로 줄바꿔 출력하도록 수정하였음(다른방법 고민해보기)
 		ObjectQueue4 q = new ObjectQueue4(20);
 		Queue<Integer> que = new LinkedList<>();
-		int oldLevel = 0, newLevel = 0;
-		que.add(oldLevel + 1);
+		int oldLevel = 1, newLevel = 0;
+//		que.add(oldLevel + 1);
+//		newLevel = que.remove();
 		
 		TreeNode4 CurrentNode = root; 
-		newLevel = que.remove();
+		oldLevel = getLevel(CurrentNode.data, c);
+		newLevel = oldLevel;
+		q.enque(CurrentNode);
 
-		while (true) {
-			System.out.print(CurrentNode.data + " ");
-
+		System.out.print("\n["+ newLevel + "]: ");
+		while (!q.isEmpty()) {
+			CurrentNode = q.deque();
+			newLevel = getLevel(CurrentNode.data, c);
+			if(oldLevel == newLevel)
+				System.out.print(CurrentNode.data + " > ");
+			else {
+//				System.out.println();
+				System.out.print("\n["+ newLevel + "]: ");
+				System.out.print(CurrentNode.data + " > ");
+				oldLevel = newLevel;
+			}
+			
 			if (CurrentNode.LeftChild != null)
 				q.enque(CurrentNode.LeftChild);
+			
 			if (CurrentNode.RightChild != null)
 				q.enque(CurrentNode.RightChild);
 
-			if (!q.isEmpty())
-				CurrentNode = q.deque();
-			else
-				break;
 		}
 	}
 	void NonrecInorder()//void Tree::inorder(TreeNode4 *CurrentNode)와 비교
@@ -629,7 +658,7 @@ public class Chap9_Test_객체이진트리 {
 				//t.NonrecInorder();
 				break;
 			case LevelorderPrint: // 전체 노드를 키값의 오름차순으로 표시
-				t.levelOrder();
+				t.levelOrder(SimpleObject4.NO_ORDER);
 				System.out.println();
 				//t.NonrecInorder();
 				break;
